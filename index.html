@@ -467,16 +467,16 @@
             width: 500px;
             height: 350px;
             position: relative;
-            margin: 40px 0;
+            margin: 40px auto;
             overflow: hidden;
         }
 
         #mountain-range {
             position: absolute;
             font-size: 220px;
-            right: -30px;
+            left: 50%;
             top: -20px;
-            transform: rotate(10deg);
+            transform: translateX(-50%) rotate(10deg);
             z-index: 1;
             filter: saturate(1.05);
         }
@@ -513,13 +513,13 @@
 
         @keyframes skate-down {
             0% {
-                left: 345px;
+                left: 250px;
                 top: 35px;
                 transform: rotate(-10deg);
                 opacity: 1;
             }
             35% {
-                left: 270px;
+                left: 220px;
                 top: 120px;
                 transform: rotate(10deg);
                 opacity: 1;
@@ -531,25 +531,25 @@
                 opacity: 1;
             }
             75% {
-                left: 135px;
+                left: 170px;
                 top: 270px;
                 transform: rotate(45deg);
                 opacity: 1;
             }
             80% {
-                left: 115px;
+                left: 160px;
                 top: 290px;
                 transform: rotate(52deg) scale(0.92);
                 opacity: 1;
             }
             82% {
-                left: 115px;
+                left: 160px;
                 top: 290px;
                 transform: rotate(52deg) scale(0.92);
                 opacity: 0;
             }
             100% {
-                left: 115px;
+                left: 160px;
                 top: 290px;
                 transform: rotate(52deg) scale(0.92);
                 opacity: 0;
@@ -560,7 +560,7 @@
             position: absolute;
             font-size: 50px;
             bottom: 40px;
-            left: 95px;
+            left: 140px;
             animation: snow-splash-effect 3.5s ease-out infinite;
             z-index: 5;
         }
@@ -779,16 +779,16 @@
                 <div class="confetti" style="left: 450px; animation-delay: 2s; background: #FFD93D;"></div>
             </div>
             <div id="skateboard-container" style="display: none;">
-                <div id="mountain-range">⛰️⛰️</div>
+                <div id="mountain-range">⛰️</div>
                 <div id="snow-field">❄️❄️❄️❄️❄️</div>
                 <div id="skate-gator">
                     <span class="gator">🐊</span>
                     <span class="board">🛹</span>
                 </div>
                 <div class="snow-splash" style="animation-delay: 0s;">❄️</div>
-                <div class="snow-splash" style="animation-delay: 0.05s; left: 70px; bottom: 55px;">❄️</div>
-                <div class="snow-splash" style="animation-delay: 0.1s; left: 130px;">❄️</div>
-                <div class="snow-splash" style="animation-delay: 0.15s; left: 105px; bottom: 65px;">❄️</div>
+                <div class="snow-splash" style="animation-delay: 0.05s; left: 115px; bottom: 55px;">❄️</div>
+                <div class="snow-splash" style="animation-delay: 0.1s; left: 175px;">❄️</div>
+                <div class="snow-splash" style="animation-delay: 0.15s; left: 150px; bottom: 65px;">❄️</div>
                 <div class="star" style="left: 50px; top: 20px; animation-delay: 0s;">⭐</div>
                 <div class="star" style="left: 150px; top: 60px; animation-delay: 0.5s;">⭐</div>
                 <div class="star" style="left: 350px; top: 30px; animation-delay: 1s;">⭐</div>
@@ -1106,28 +1106,11 @@
                     : 'YOU MUST BE<br>THIS TALL<br>TO RIDE';
             }
 
-            const swampPole = document.querySelector('#swamp-sign .sign-pole');
-            const victoryPole = document.querySelector('#victory-sign .sign-pole');
+            // Hide flags - gator size is the main progress indicator
             const swampFlag = document.getElementById('swamp-progress-flag');
             const victoryFlag = document.getElementById('victory-progress-flag');
-
-            const setFlag = (poleEl, flagEl) => {
-                if (!poleEl || !flagEl) return;
-                if (!isSection2) {
-                    flagEl.style.display = 'none';
-                    return;
-                }
-                const ratioRaw = (currentLevel - SECTION_2_START) / (SECTION_2_END - SECTION_2_START);
-                const ratio = Math.max(0, Math.min(1, ratioRaw));
-                const poleHeight = poleEl.getBoundingClientRect().height || 0;
-                const inset = 8;
-                const bottomPx = inset + ratio * Math.max(0, poleHeight - inset * 2);
-                flagEl.style.bottom = `${bottomPx}px`;
-                flagEl.style.display = 'block';
-            };
-
-            setFlag(swampPole, swampFlag);
-            setFlag(victoryPole, victoryFlag);
+            if (swampFlag) swampFlag.style.display = 'none';
+            if (victoryFlag) victoryFlag.style.display = 'none';
         }
 
         function displayText() {
@@ -1247,7 +1230,7 @@
             
             if (gameComplete) {
                 if (victoryTitle) victoryTitle.textContent = "All Levels Complete! 🎉";
-                victoryMessage.textContent = "Level 30 complete! Your gator skates down the mountain and splash-lands in the snow!";
+                victoryMessage.textContent = "Level 30 complete! Your gator skateboards down the mountain and splash-lands in the snow!";
                 document.getElementById('next-level-btn').textContent = "Play Again";
                 // Show final animation, hide growth container
                 growthContainer.style.display = 'none';
@@ -1255,7 +1238,7 @@
                 if (rollerCoaster) rollerCoaster.style.display = 'none';
             } else if (currentLevel === SECTION_1_END) {
                 if (victoryTitle) victoryTitle.textContent = "Section 1 Complete! 🎉";
-                victoryMessage.textContent = "You did it! Time for the water slide ride! 🛝  Next: keep helping your gator get even bigger so he’s ready for the next ride!";
+                victoryMessage.innerHTML = "You did it! Time for the water slide ride! 🛝<br>Next: keep helping your gator get even bigger so he's ready for the next ride!";
                 document.getElementById('next-level-btn').textContent = "Start Section 2";
                 growthContainer.style.display = 'none';
                 if (rollerCoaster) rollerCoaster.style.display = 'block';
@@ -1272,17 +1255,20 @@
                 skateboard.style.display = 'none';
                 if (rollerCoaster) rollerCoaster.style.display = 'none';
                 
-                // Calculate final size for the sign (max level size)
+                // Calculate gator size and sign height using same proportions as swamp
+                // Swamp uses baseSize=60, growth=5 per level, sign ratio=1.2
+                // Victory uses same ratio but scaled up for prominence
                 const maxLevelForThisSection = currentLevel <= SECTION_1_END ? SECTION_1_END : SECTION_2_END;
-                const finalSize = 100 + (maxLevelForThisSection - 1) * 8;
+                const baseSize = 60;
+                const growthPerLevel = 5;
+                const signRatio = 1.2;
+                const victoryScale = 1.5; // Scale factor for victory screen
                 
-                // Calculate current gator size
-                const baseSize = 100;
-                const sizeIncrease = (currentLevel - 1) * 8;
-                gatorGrowth.style.fontSize = (baseSize + sizeIncrease) + 'px';
+                const currentGatorSize = baseSize + (currentLevel - 1) * growthPerLevel;
+                const finalGatorSize = baseSize + (maxLevelForThisSection - 1) * growthPerLevel;
                 
-                // Set sign height to match final gator size
-                document.querySelector('#victory-sign .sign-pole').style.height = (finalSize * 0.8) + 'px';
+                gatorGrowth.style.fontSize = (currentGatorSize * victoryScale) + 'px';
+                document.querySelector('#victory-sign .sign-pole').style.height = (finalGatorSize * signRatio * victoryScale) + 'px';
             }
             
             updateSignAndFlag();
