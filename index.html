@@ -314,6 +314,18 @@
             width: 6px;
             background: #8B4513;
             border-radius: 3px;
+            position: relative;
+        }
+
+        .progress-flag {
+            position: absolute;
+            left: -18px;
+            bottom: 8px;
+            font-size: 20px;
+            line-height: 1;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.25);
+            pointer-events: none;
+            display: none;
         }
 
         #swamp-sign .sign-pole {
@@ -340,6 +352,115 @@
         #victory-sign .sign-board {
             font-size: 14px;
             padding: 10px 15px;
+        }
+
+        #roller-coaster-container {
+            width: 500px;
+            height: 350px;
+            position: relative;
+            margin: 40px 0;
+        }
+
+        #water-slide {
+            position: absolute;
+            font-size: 200px;
+            right: 50px;
+            top: 0;
+            transform: scaleX(-1) rotate(15deg);
+            z-index: 1;
+        }
+
+        #water-pool {
+            position: absolute;
+            font-size: 80px;
+            bottom: 20px;
+            left: 50px;
+            z-index: 1;
+        }
+
+        #roller-coaster-gator {
+            position: absolute;
+            font-size: 70px;
+            transform: scaleX(-1);
+            animation: slide-down 3s ease-in infinite;
+            z-index: 10;
+        }
+
+        @keyframes slide-down {
+            0% {
+                right: 150px;
+                top: 40px;
+                transform: scaleX(-1) rotate(0deg);
+                opacity: 1;
+            }
+            25% {
+                right: 200px;
+                top: 120px;
+                transform: scaleX(-1) rotate(20deg);
+                opacity: 1;
+            }
+            45% {
+                right: 250px;
+                top: 200px;
+                transform: scaleX(-1) rotate(40deg);
+                opacity: 1;
+            }
+            55% {
+                right: 280px;
+                top: 240px;
+                transform: scaleX(-1) rotate(180deg);
+                opacity: 1;
+            }
+            65% {
+                right: 300px;
+                top: 260px;
+                transform: scaleX(-1) rotate(360deg);
+                opacity: 1;
+            }
+            70% {
+                right: 310px;
+                top: 270px;
+                transform: scaleX(-1) rotate(360deg);
+                opacity: 0;
+            }
+            100% {
+                right: 310px;
+                top: 270px;
+                transform: scaleX(-1) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .splash {
+            position: absolute;
+            font-size: 50px;
+            bottom: 30px;
+            left: 80px;
+            animation: splash-effect 3s ease-out infinite;
+            z-index: 5;
+        }
+
+        @keyframes splash-effect {
+            0%, 60% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            65% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            75% {
+                opacity: 0.8;
+                transform: scale(1.5);
+            }
+            85% {
+                opacity: 0;
+                transform: scale(2);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(2);
+            }
         }
 
         #skateboard-container {
@@ -613,8 +734,10 @@
             <div id="swamp-content">
                 <div id="alligator">🐊</div>
                 <div id="swamp-sign" class="height-sign">
-                    <div class="sign-board">YOU MUST BE<br>THIS TALL<br>TO RIDE</div>
-                    <div class="sign-pole"></div>
+                    <div id="swamp-sign-board" class="sign-board">YOU MUST BE<br>THIS TALL<br>TO RIDE</div>
+                    <div class="sign-pole">
+                        <div id="swamp-progress-flag" class="progress-flag">🚩</div>
+                    </div>
                 </div>
             </div>
             <div id="swamp-water">
@@ -631,9 +754,29 @@
             <div id="growth-container">
                 <div id="gator-growth">🐊</div>
                 <div id="victory-sign" class="height-sign">
-                    <div class="sign-board">YOU MUST BE<br>THIS TALL<br>TO RIDE</div>
-                    <div class="sign-pole"></div>
+                    <div id="victory-sign-board" class="sign-board">YOU MUST BE<br>THIS TALL<br>TO RIDE</div>
+                    <div class="sign-pole">
+                        <div id="victory-progress-flag" class="progress-flag">🚩</div>
+                    </div>
                 </div>
+            </div>
+            <div id="roller-coaster-container" style="display: none;">
+                <div id="water-slide">🛝</div>
+                <div id="water-pool">🌊🌊🌊</div>
+                <div id="roller-coaster-gator">🐊</div>
+                <div class="splash" style="animation-delay: 0s;">💦</div>
+                <div class="splash" style="animation-delay: 0.1s; left: 50px;">💦</div>
+                <div class="splash" style="animation-delay: 0.15s; left: 110px;">💦</div>
+                <div class="splash" style="animation-delay: 0.05s; left: 70px; bottom: 50px;">💦</div>
+                <div class="star" style="left: 50px; top: 20px; animation-delay: 0s;">⭐</div>
+                <div class="star" style="left: 150px; top: 60px; animation-delay: 0.5s;">⭐</div>
+                <div class="star" style="left: 350px; top: 30px; animation-delay: 1s;">⭐</div>
+                <div class="star" style="left: 450px; top: 80px; animation-delay: 0.3s;">⭐</div>
+                <div class="confetti" style="left: 50px; animation-delay: 0s; background: #FFD700;"></div>
+                <div class="confetti" style="left: 150px; animation-delay: 0.5s; background: #FF6B6B;"></div>
+                <div class="confetti" style="left: 250px; animation-delay: 1s; background: #4ECDC4;"></div>
+                <div class="confetti" style="left: 350px; animation-delay: 1.5s; background: #95E1D3;"></div>
+                <div class="confetti" style="left: 450px; animation-delay: 2s; background: #FFD93D;"></div>
             </div>
             <div id="skateboard-container" style="display: none;">
                 <div id="mountain-range">⛰️⛰️</div>
@@ -682,6 +825,10 @@
         let currentLetterIndex = 0;
         let currentText = '';
         let correctCount = 0;
+
+        const SECTION_1_END = 15;
+        const SECTION_2_START = 16;
+        const SECTION_2_END = 30;
 
         // Level definitions
         const levels = [
@@ -780,7 +927,7 @@
                 name: 'Section 2 Warmup',
                 keys: ['f', 'j', ' '],
                 text: 'j f jf fj j f fj jf',
-                description: 'Section 2: same keys, mixed up!'
+                description: "Keep helping your gator get even bigger so he’s ready for the next ride!"
             },
             {
                 name: 'Remix: D and K',
@@ -943,6 +1090,46 @@
             setCookie('gatorTypingLevel', level, 365);
         }
 
+        function updateSignAndFlag() {
+            const isSection2 = currentLevel >= SECTION_2_START;
+            const swampBoard = document.getElementById('swamp-sign-board');
+            const victoryBoard = document.getElementById('victory-sign-board');
+
+            if (swampBoard) {
+                swampBoard.innerHTML = isSection2
+                    ? 'YOU MUST BE<br>THIS TALL<br>TO SKATE'
+                    : 'YOU MUST BE<br>THIS TALL<br>TO RIDE';
+            }
+            if (victoryBoard) {
+                victoryBoard.innerHTML = isSection2
+                    ? 'YOU MUST BE<br>THIS TALL<br>TO SKATE'
+                    : 'YOU MUST BE<br>THIS TALL<br>TO RIDE';
+            }
+
+            const swampPole = document.querySelector('#swamp-sign .sign-pole');
+            const victoryPole = document.querySelector('#victory-sign .sign-pole');
+            const swampFlag = document.getElementById('swamp-progress-flag');
+            const victoryFlag = document.getElementById('victory-progress-flag');
+
+            const setFlag = (poleEl, flagEl) => {
+                if (!poleEl || !flagEl) return;
+                if (!isSection2) {
+                    flagEl.style.display = 'none';
+                    return;
+                }
+                const ratioRaw = (currentLevel - SECTION_2_START) / (SECTION_2_END - SECTION_2_START);
+                const ratio = Math.max(0, Math.min(1, ratioRaw));
+                const poleHeight = poleEl.getBoundingClientRect().height || 0;
+                const inset = 8;
+                const bottomPx = inset + ratio * Math.max(0, poleHeight - inset * 2);
+                flagEl.style.bottom = `${bottomPx}px`;
+                flagEl.style.display = 'block';
+            };
+
+            setFlag(swampPole, swampFlag);
+            setFlag(victoryPole, victoryFlag);
+        }
+
         function displayText() {
             const display = document.getElementById('text-display');
             display.innerHTML = '';
@@ -1025,9 +1212,11 @@
             gator.style.fontSize = (baseSize + sizeIncrease) + 'px';
             
             // Update swamp sign height to match final gator size
-            const maxLevel = levels.length;
-            const finalSize = baseSize + (maxLevel - 1) * 5;
+            const maxLevelForThisSection = currentLevel <= SECTION_1_END ? SECTION_1_END : SECTION_2_END;
+            const finalSize = baseSize + (maxLevelForThisSection - 1) * 5;
             document.querySelector('#swamp-sign .sign-pole').style.height = (finalSize * 1.2) + 'px';
+
+            updateSignAndFlag();
         }
 
         function throwFood(letter) {
@@ -1054,6 +1243,7 @@
             const growthContainer = document.getElementById('growth-container');
             const skateboard = document.getElementById('skateboard-container');
             const victoryTitle = document.getElementById('victory-title');
+            const rollerCoaster = document.getElementById('roller-coaster-container');
             
             if (gameComplete) {
                 if (victoryTitle) victoryTitle.textContent = "All Levels Complete! 🎉";
@@ -1062,20 +1252,29 @@
                 // Show final animation, hide growth container
                 growthContainer.style.display = 'none';
                 skateboard.style.display = 'block';
+                if (rollerCoaster) rollerCoaster.style.display = 'none';
+            } else if (currentLevel === SECTION_1_END) {
+                if (victoryTitle) victoryTitle.textContent = "Section 1 Complete! 🎉";
+                victoryMessage.textContent = "You did it! Time for the water slide ride! 🛝  Next: keep helping your gator get even bigger so he’s ready for the next ride!";
+                document.getElementById('next-level-btn').textContent = "Start Section 2";
+                growthContainer.style.display = 'none';
+                if (rollerCoaster) rollerCoaster.style.display = 'block';
+                skateboard.style.display = 'none';
             } else {
                 if (victoryTitle) victoryTitle.textContent = "Level Complete! 🎉";
-                if (currentLevel === 15) {
-                    victoryMessage.textContent = "Section 1 complete! Ready for Section 2: same keys, more mixing.";
+                if (currentLevel >= SECTION_2_START) {
+                    victoryMessage.textContent = "Keep helping your gator get even bigger so he’s ready for the next ride!";
                 } else {
                     victoryMessage.textContent = "Great job! Your gator is growing!";
                 }
                 document.getElementById('next-level-btn').textContent = "Next Level";
                 growthContainer.style.display = 'flex';
                 skateboard.style.display = 'none';
+                if (rollerCoaster) rollerCoaster.style.display = 'none';
                 
                 // Calculate final size for the sign (max level size)
-                const maxLevel = levels.length;
-                const finalSize = 100 + (maxLevel - 1) * 8;
+                const maxLevelForThisSection = currentLevel <= SECTION_1_END ? SECTION_1_END : SECTION_2_END;
+                const finalSize = 100 + (maxLevelForThisSection - 1) * 8;
                 
                 // Calculate current gator size
                 const baseSize = 100;
@@ -1086,6 +1285,7 @@
                 document.querySelector('#victory-sign .sign-pole').style.height = (finalSize * 0.8) + 'px';
             }
             
+            updateSignAndFlag();
             victoryScreen.style.display = 'flex';
         }
 
