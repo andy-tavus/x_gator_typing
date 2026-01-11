@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.8, minimum-scale=0.8">
+    <title>Gator Typing - Learn to Type!</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐊</text></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            background: linear-gradient(to bottom, #87CEEB 0%, #98D8E8 100%);
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        #level-tracker {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 250px;
+            margin: 0 auto;
+            width: fit-content;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px 30px;
+            border-radius: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #2d5016;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 100;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        #level-tracker:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: scale(1.05);
+        }
+
+        #game-container {
+            display: flex;
+            height: 100vh;
+            position: relative;
+        }
+
+        #main-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        #text-display {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px 60px;
+            border-radius: 30px;
+            font-size: 48px;
+            letter-spacing: 8px;
+            margin-bottom: 50px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            min-width: 600px;
+            text-align: center;
+        }
+
+        .letter {
+            display: inline-block;
+            padding: 5px;
+            transition: all 0.2s;
+        }
+
+        .letter.current {
+            background: #FFD700;
+            border-radius: 8px;
+            transform: scale(1.2);
+        }
+
+        .letter.completed {
+            color: #4CAF50;
+            opacity: 0.6;
+        }
+
+        .letter.incorrect {
+            color: #f44336;
+            animation: shake 0.3s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        #keyboard-container {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            right: 250px;
+            margin: 0 auto;
+            width: fit-content;
+        }
+
+        .keyboard-row {
+            display: flex;
+            justify-content: center;
+            margin: 5px 0;
+        }
+
+        .key {
+            background: white;
+            border: 2px solid #333;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 3px;
+            min-width: 50px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+            transition: all 0.1s;
+        }
+
+        .key.highlight {
+            background: #FFD700;
+            transform: scale(1.1);
+        }
+
+        .key.pressed {
+            background: #C8E6C9;
+            transform: scale(0.95);
+            border-color: #66BB6A;
+        }
+
+        .key.space {
+            min-width: 300px;
+        }
+
+        #swamp-area {
+            width: 250px;
+            background: linear-gradient(to bottom, #8B7355 0%, #6B5D4F 50%, #5C4F42 100%);
+            border-left: 5px solid #4a3f35;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 30px;
+        }
+
+        #swamp-water {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(to bottom, #4a7c59 0%, #2d5016 100%);
+            border-top: 3px solid #3d6b47;
+        }
+
+        .water-ripple {
+            position: absolute;
+            width: 100%;
+            height: 20px;
+            background: repeating-linear-gradient(
+                90deg,
+                rgba(255,255,255,0.1) 0px,
+                transparent 20px,
+                rgba(255,255,255,0.1) 40px
+            );
+            animation: ripple 3s infinite linear;
+        }
+
+        @keyframes ripple {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(40px); }
+        }
+
+        #swamp-content {
+            position: relative;
+            display: flex;
+            gap: 15px;
+            align-items: flex-end;
+            z-index: 10;
+        }
+
+        #alligator {
+            font-size: 60px;
+            transition: all 0.5s;
+            transform: scaleX(-1);
+        }
+
+        #alligator.eating {
+            animation: eat 1s;
+        }
+
+        @keyframes eat {
+            0%, 80% { transform: scaleX(-1) scale(1); }
+            90% { transform: scaleX(-1) scale(1.2); }
+            100% { transform: scaleX(-1) scale(1); }
+        }
+
+        .food {
+            position: absolute;
+            font-size: 40px;
+            animation: fall 1s ease-in;
+            z-index: 5;
+        }
+
+        @keyframes fall {
+            0% {
+                top: 50%;
+                left: 30%;
+                opacity: 1;
+            }
+            85% {
+                top: 200px;
+                left: 70px;
+                opacity: 1;
+            }
+            100% {
+                top: 200px;
+                left: 70px;
+                opacity: 0;
+            }
+        }
+
+        #victory-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        #victory-content {
+            background: white;
+            padding: 60px;
+            border-radius: 30px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        #victory-content h2 {
+            color: #4CAF50;
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        #victory-content p {
+            font-size: 24px;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        #next-level-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            font-size: 28px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-family: inherit;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: all 0.2s;
+        }
+
+        #next-level-btn:hover {
+            background: #45a049;
+            transform: scale(1.05);
+        }
+
+        #gator-growth {
+            font-size: 100px;
+            margin: 20px 0;
+            animation: grow 1s ease-out;
+            transform: scaleX(-1);
+        }
+
+        @keyframes grow {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        #growth-container {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 40px;
+            margin: 20px 0;
+            min-height: 250px;
+        }
+
+        .height-sign {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .sign-pole {
+            width: 6px;
+            background: #8B4513;
+            border-radius: 3px;
+            position: relative;
+        }
+
+        .progress-flag {
+            position: absolute;
+            left: -18px;
+            bottom: 8px;
+            font-size: 20px;
+            line-height: 1;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.25);
+            pointer-events: none;
+            display: none;
+        }
+
+        #swamp-sign .sign-pole {
+            height: 180px;
+        }
+
+        .sign-board {
+            background: #FFD700;
+            border: 3px solid #333;
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: bold;
+            white-space: nowrap;
+            margin-bottom: 8px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+            line-height: 1.3;
+        }
+
+        #victory-sign .sign-pole {
+            height: 200px;
+        }
+
+        #victory-sign .sign-board {
+            font-size: 14px;
+            padding: 10px 15px;
+        }
+
+        #roller-coaster-container {
+            width: 500px;
+            height: 350px;
+            position: relative;
+            margin: 40px 0;
+        }
+
+        #water-slide {
+            position: absolute;
+            font-size: 200px;
+            right: 50px;
+            top: 0;
+            transform: scaleX(-1) rotate(15deg);
+            z-index: 1;
+        }
+
+        #water-pool {
+            position: absolute;
+            font-size: 80px;
+            bottom: 20px;
+            left: 50px;
+            z-index: 1;
+        }
+
+        #roller-coaster-gator {
+            position: absolute;
+            font-size: 70px;
+            transform: scaleX(-1);
+            animation: slide-down 3s ease-in infinite;
+            z-index: 10;
+        }
+
+        @keyframes slide-down {
+            0% {
+                right: 150px;
+                top: 40px;
+                transform: scaleX(-1) rotate(0deg);
+                opacity: 1;
+            }
+            25% {
+                right: 200px;
+                top: 120px;
+                transform: scaleX(-1) rotate(20deg);
+                opacity: 1;
+            }
+            45% {
+                right: 250px;
+                top: 200px;
+                transform: scaleX(-1) rotate(40deg);
+                opacity: 1;
+            }
+            55% {
+                right: 280px;
+                top: 240px;
+                transform: scaleX(-1) rotate(180deg);
+                opacity: 1;
+            }
+            65% {
+                right: 300px;
+                top: 260px;
+                transform: scaleX(-1) rotate(360deg);
+                opacity: 1;
+            }
+            70% {
+                right: 310px;
+                top: 270px;
+                transform: scaleX(-1) rotate(360deg);
+                opacity: 0;
+            }
+            100% {
+                right: 310px;
+                top: 270px;
+                transform: scaleX(-1) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .splash {
+            position: absolute;
+            font-size: 50px;
+            bottom: 30px;
+            left: 80px;
+            animation: splash-effect 3s ease-out infinite;
+            z-index: 5;
+        }
+
+        @keyframes splash-effect {
+            0%, 60% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            65% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            75% {
+                opacity: 0.8;
+                transform: scale(1.5);
+            }
+            85% {
+                opacity: 0;
+                transform: scale(2);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(2);
+            }
+        }
+
+        #skateboard-container {
+            width: 500px;
+            height: 350px;
+            position: relative;
+            margin: 40px auto;
+            overflow: hidden;
+        }
+
+        #mountain-range {
+            position: absolute;
+            font-size: 220px;
+            left: 50%;
+            top: -20px;
+            transform: translateX(-50%) rotate(10deg);
+            z-index: 1;
+            filter: saturate(1.05);
+        }
+
+        #snow-field {
+            position: absolute;
+            font-size: 70px;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            z-index: 1;
+        }
+
+        #skate-gator {
+            position: absolute;
+            font-size: 68px;
+            animation: skate-down 3.5s ease-in infinite;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 0.95;
+        }
+
+        #skate-gator .gator {
+            transform: scaleX(-1);
+        }
+
+        #skate-gator .board {
+            font-size: 44px;
+            margin-top: -10px;
+        }
+
+        @keyframes skate-down {
+            0% {
+                left: 250px;
+                top: 35px;
+                transform: rotate(-10deg);
+                opacity: 1;
+            }
+            35% {
+                left: 220px;
+                top: 120px;
+                transform: rotate(10deg);
+                opacity: 1;
+            }
+            60% {
+                left: 190px;
+                top: 210px;
+                transform: rotate(30deg);
+                opacity: 1;
+            }
+            75% {
+                left: 170px;
+                top: 270px;
+                transform: rotate(45deg);
+                opacity: 1;
+            }
+            80% {
+                left: 160px;
+                top: 290px;
+                transform: rotate(52deg) scale(0.92);
+                opacity: 1;
+            }
+            82% {
+                left: 160px;
+                top: 290px;
+                transform: rotate(52deg) scale(0.92);
+                opacity: 0;
+            }
+            100% {
+                left: 160px;
+                top: 290px;
+                transform: rotate(52deg) scale(0.92);
+                opacity: 0;
+            }
+        }
+
+        .snow-splash {
+            position: absolute;
+            font-size: 50px;
+            bottom: 40px;
+            left: 140px;
+            animation: snow-splash-effect 3.5s ease-out infinite;
+            z-index: 5;
+        }
+
+        @keyframes snow-splash-effect {
+            0%, 74% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            80% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            88% {
+                opacity: 0.8;
+                transform: scale(1.6);
+            }
+            95% {
+                opacity: 0;
+                transform: scale(2.2);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(2.2);
+            }
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #FFD700;
+            animation: fall-confetti 3s linear infinite;
+        }
+
+        @keyframes fall-confetti {
+            0% {
+                top: -20px;
+                opacity: 1;
+                transform: rotate(0deg);
+            }
+            100% {
+                top: 320px;
+                opacity: 0;
+                transform: rotate(720deg);
+            }
+        }
+
+        .star {
+            position: absolute;
+            color: #FFD700;
+            font-size: 30px;
+            animation: twinkle 1.5s ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        #admin-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        #admin-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            min-width: 300px;
+        }
+
+        #admin-content h3 {
+            margin-bottom: 20px;
+            color: #2d5016;
+        }
+
+        #admin-content label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        #admin-content input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+
+        #admin-content button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        #admin-go-btn {
+            background: #4CAF50;
+            color: white;
+        }
+
+        #admin-go-btn:hover {
+            background: #45a049;
+        }
+
+        #admin-cancel-btn {
+            background: #ccc;
+            color: #333;
+        }
+
+        #admin-cancel-btn:hover {
+            background: #bbb;
+        }
+
+        #admin-error {
+            color: #f44336;
+            margin-top: 10px;
+            display: none;
+        }
+
+        #instructions {
+            position: absolute;
+            top: 100px;
+            left: 0;
+            right: 250px;
+            margin: 0 auto;
+            width: fit-content;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px 30px;
+            border-radius: 15px;
+            font-size: 20px;
+            color: #333;
+            text-align: center;
+            max-width: 500px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div id="level-tracker">
+        Level <span id="current-level">1</span>
+        <span id="current-section" style="font-size: 14px; font-weight: 600; opacity: 0.7; margin-left: 8px;"></span>
+    </div>
+    
+    <div id="game-container">
+        <div id="main-area">
+            <div id="instructions">Type the letters you see!</div>
+            <div id="text-display"></div>
+        </div>
+        
+        <div id="swamp-area">
+            <div id="swamp-content">
+                <div id="alligator">🐊</div>
+                <div id="swamp-sign" class="height-sign">
+                    <div id="swamp-sign-board" class="sign-board">YOU MUST BE<br>THIS TALL<br>TO RIDE</div>
+                    <div class="sign-pole">
+                        <div id="swamp-progress-flag" class="progress-flag">🚩</div>
+                    </div>
+                </div>
+            </div>
+            <div id="swamp-water">
+                <div class="water-ripple"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="keyboard-container"></div>
+
+    <div id="victory-screen">
+        <div id="victory-content">
+            <h2 id="victory-title">Level Complete! 🎉</h2>
+            <div id="growth-container">
+                <div id="gator-growth">🐊</div>
+                <div id="victory-sign" class="height-sign">
+                    <div id="victory-sign-board" class="sign-board">YOU MUST BE<br>THIS TALL<br>TO RIDE</div>
+                    <div class="sign-pole">
+                        <div id="victory-progress-flag" class="progress-flag">🚩</div>
+                    </div>
+                </div>
+            </div>
+            <div id="roller-coaster-container" style="display: none;">
+                <div id="water-slide">🛝</div>
+                <div id="water-pool">🌊🌊🌊</div>
+                <div id="roller-coaster-gator">🐊</div>
+                <div class="splash" style="animation-delay: 0s;">💦</div>
+                <div class="splash" style="animation-delay: 0.1s; left: 50px;">💦</div>
+                <div class="splash" style="animation-delay: 0.15s; left: 110px;">💦</div>
+                <div class="splash" style="animation-delay: 0.05s; left: 70px; bottom: 50px;">💦</div>
+                <div class="star" style="left: 50px; top: 20px; animation-delay: 0s;">⭐</div>
+                <div class="star" style="left: 150px; top: 60px; animation-delay: 0.5s;">⭐</div>
+                <div class="star" style="left: 350px; top: 30px; animation-delay: 1s;">⭐</div>
+                <div class="star" style="left: 450px; top: 80px; animation-delay: 0.3s;">⭐</div>
+                <div class="confetti" style="left: 50px; animation-delay: 0s; background: #FFD700;"></div>
+                <div class="confetti" style="left: 150px; animation-delay: 0.5s; background: #FF6B6B;"></div>
+                <div class="confetti" style="left: 250px; animation-delay: 1s; background: #4ECDC4;"></div>
+                <div class="confetti" style="left: 350px; animation-delay: 1.5s; background: #95E1D3;"></div>
+                <div class="confetti" style="left: 450px; animation-delay: 2s; background: #FFD93D;"></div>
+            </div>
+            <div id="skateboard-container" style="display: none;">
+                <div id="mountain-range">⛰️</div>
+                <div id="snow-field">❄️❄️❄️❄️❄️</div>
+                <div id="skate-gator">
+                    <span class="gator">🐊</span>
+                    <span class="board">🛹</span>
+                </div>
+                <div class="snow-splash" style="animation-delay: 0s;">❄️</div>
+                <div class="snow-splash" style="animation-delay: 0.05s; left: 115px; bottom: 55px;">❄️</div>
+                <div class="snow-splash" style="animation-delay: 0.1s; left: 175px;">❄️</div>
+                <div class="snow-splash" style="animation-delay: 0.15s; left: 150px; bottom: 65px;">❄️</div>
+                <div class="star" style="left: 50px; top: 20px; animation-delay: 0s;">⭐</div>
+                <div class="star" style="left: 150px; top: 60px; animation-delay: 0.5s;">⭐</div>
+                <div class="star" style="left: 350px; top: 30px; animation-delay: 1s;">⭐</div>
+                <div class="star" style="left: 450px; top: 80px; animation-delay: 0.3s;">⭐</div>
+                <div class="confetti" style="left: 50px; animation-delay: 0s; background: #FFD700;"></div>
+                <div class="confetti" style="left: 150px; animation-delay: 0.5s; background: #FF6B6B;"></div>
+                <div class="confetti" style="left: 250px; animation-delay: 1s; background: #4ECDC4;"></div>
+                <div class="confetti" style="left: 350px; animation-delay: 1.5s; background: #95E1D3;"></div>
+                <div class="confetti" style="left: 450px; animation-delay: 2s; background: #FFD93D;"></div>
+            </div>
+            <p id="victory-message"></p>
+            <button id="next-level-btn">Next Level</button>
+        </div>
+    </div>
+
+    <div id="admin-modal">
+        <div id="admin-content">
+            <h3>Admin Mode</h3>
+            <label>Password:</label>
+            <input type="password" id="admin-password" placeholder="Enter password">
+            <label>Level:</label>
+            <input type="number" id="admin-level" placeholder="Enter level number" min="1" max="30">
+            <div>
+                <button id="admin-go-btn">Go</button>
+                <button id="admin-cancel-btn">Cancel</button>
+            </div>
+            <div id="admin-error">Invalid password or level number</div>
+        </div>
+    </div>
+
+    <script>
+        // Game state
+        let currentLevel = 1;
+        let currentLetterIndex = 0;
+        let currentText = '';
+        let correctCount = 0;
+
+        const SECTION_1_END = 15;
+        const SECTION_2_START = 16;
+        const SECTION_2_END = 30;
+
+        // Level definitions
+        const levels = [
+            { 
+                name: 'Space Bar', 
+                keys: [' '], 
+                text: '         ',
+                description: 'Press the space bar with your thumbs!'
+            },
+            { 
+                name: 'Letter F', 
+                keys: ['f', ' '], 
+                text: 'fff fff fff fff',
+                description: 'Press F with your left pointer finger!'
+            },
+            { 
+                name: 'Letter J', 
+                keys: ['j', ' '], 
+                text: 'jjj jjj jjj jjj',
+                description: 'Press J with your right pointer finger!'
+            },
+            { 
+                name: 'F and J Together', 
+                keys: ['f', 'j'], 
+                text: 'fff jjj fjf jfj fjj jff',
+                description: 'Alternate between F and J!'
+            },
+            { 
+                name: 'Space with F and J', 
+                keys: ['f', 'j', ' '], 
+                text: 'f j f j fff jjj f j',
+                description: 'Add spaces between letters!'
+            },
+            { 
+                name: 'Letter D', 
+                keys: ['f', 'd', ' '], 
+                text: 'ddd fff ddd fff dfd fdf',
+                description: 'Add D with your left middle finger!'
+            },
+            { 
+                name: 'Letter K', 
+                keys: ['j', 'k', ' '], 
+                text: 'kkk jjj kkk jjj kjk jkj',
+                description: 'Add K with your right middle finger!'
+            },
+            { 
+                name: 'D and K Practice', 
+                keys: ['f', 'j', 'd', 'k'], 
+                text: 'ddd kkk fjf jfj dkd kdk fdjk',
+                description: 'Practice all four keys together!'
+            },
+            { 
+                name: 'Home Row - A & ;', 
+                keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ';'], 
+                text: 'aaa ;;; asdf jkl; fdsa ;lkj',
+                description: 'Complete the home row!'
+            },
+            { 
+                name: 'Home Row Complete', 
+                keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ';'], 
+                text: 'a;sldkfj fads jkls ;lak sjdf kfld',
+                description: 'Practice all home row keys!'
+            },
+            { 
+                name: 'Home Row with Spaces', 
+                keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ';', ' '], 
+                text: 'as df jk l; ad fj ks d; fl',
+                description: 'Use spaces with home row keys!'
+            },
+            { 
+                name: 'Top Row - G & H', 
+                keys: ['f', 'g', 'h', 'j', ' '], 
+                text: 'ggg hhh fgf jhj ghg hgh fghj',
+                description: 'Learn G and H above home row!'
+            },
+            { 
+                name: 'Top Row - R & U', 
+                keys: ['r', 'f', 'j', 'u', ' '], 
+                text: 'rrr uuu rfr juj rur fuj',
+                description: 'Add R and U keys!'
+            },
+            { 
+                name: 'Words!', 
+                keys: ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ' '], 
+                text: 'dad sad ask lad gag had hal',
+                description: 'Type real words!'
+            },
+            { 
+                name: 'More Words', 
+                keys: ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ' '], 
+                text: 'fall hall dash all ask has',
+                description: 'Practice more words!'
+            },
+            // SECTION 2: Same keys, mixed-up "remix" levels (gradually harder)
+            {
+                name: 'Section 2 Warmup',
+                keys: ['f', 'j', ' '],
+                text: 'j f jf fj j f fj jf',
+                description: "Keep helping your gator get even bigger so he’s ready for the next ride!"
+            },
+            {
+                name: 'Remix: D and K',
+                keys: ['d', 'f', 'j', 'k', ' '],
+                text: 'df jk fd kj dj fk jd kd',
+                description: 'Mix D/F with J/K.'
+            },
+            {
+                name: 'Home Row Remix I',
+                keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ';', ' '],
+                text: 'as dj fk l; ;l kf jd sa',
+                description: 'Home row, but scrambled.'
+            },
+            {
+                name: 'Home Row Remix II',
+                keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ';', ' '],
+                text: 'a; sl dk fj ;l kj fd sa ;l',
+                description: 'Stay steady and accurate.'
+            },
+            {
+                name: 'G and H Remix',
+                keys: ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', ' '],
+                text: 'gh hg fg hj g h ah ha had hag',
+                description: 'Add G/H into the mix.'
+            },
+            {
+                name: 'Words Remix I',
+                keys: ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ' '],
+                text: 'ash had sag gash half hash',
+                description: 'Short words, clean typing.'
+            },
+            {
+                name: 'R and U Remix',
+                keys: ['f', 'j', 'r', 'u', ' '],
+                text: 'r u ru ur fur jur ruf uru',
+                description: 'Add R/U without rushing.'
+            },
+            {
+                name: 'Words Remix II',
+                keys: ['a', 'd', 'h', 'k', 'l', 'r', 's', 'u', ' '],
+                text: 'rush dark sulk hurl',
+                description: 'New words with R/U.'
+            },
+            {
+                name: 'Phrase Practice I',
+                keys: ['a', 'd', 'h', 'r', 's', 'u', ' '],
+                text: 'had a hard rush',
+                description: 'Type the phrase with smooth rhythm.'
+            },
+            {
+                name: 'Semicolon Mix',
+                keys: ['a', 'd', 'f', 'h', 'j', 'k', 'l', ';', 'r', 's', 'u', ' '],
+                text: 'a rash; a harsh lash',
+                description: 'Include semicolons and spaces.'
+            },
+            {
+                name: 'Long Mix I',
+                keys: ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', 'r', 'u', ' '],
+                text: 'asdf jkl; had rush; hash gash',
+                description: 'Longer lines, same keys.'
+            },
+            {
+                name: 'Accuracy Challenge',
+                keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ';', ' '],
+                text: ';l; l;lk k;j ;a; a;sa',
+                description: 'Go slow: accuracy first.'
+            },
+            {
+                name: 'Speed Challenge',
+                keys: ['a', 'd', 'f', 'h', 'r', 's', 'u', ' '],
+                text: 'rush rush had a hard dash',
+                description: 'Pick up speed, keep control.'
+            },
+            {
+                name: 'Final Mix',
+                keys: ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', 'r', 'u', ' '],
+                text: 'half harsh; rush; hurl; asdf jkl;',
+                description: 'One more big mix before the finish!'
+            },
+            {
+                name: 'Section 2 Finale',
+                keys: ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', 'r', 'u', ' '],
+                text: 'had a hard rush; hash gash; rush; hurl',
+                description: 'Final level: smooth, steady, accurate.'
+            }
+        ];
+
+        // Food emojis for each letter
+        const foodMap = {
+            'a': '🍎', 'b': '🍌', 'c': '🥕', 'd': '🍩', 'e': '🥚', 
+            'f': '🍟', 'g': '🍇', 'h': '🍯', 'i': '🍦', 'j': '🧃',
+            'k': '🥝', 'l': '🍋', 'm': '🍄', 'n': '🥜', 'o': '🫒',
+            'p': '🍕', 'q': '🧁', 'r': '🍚', 's': '🍓', 't': '🍅',
+            'u': '☂️', 'v': '🧇', 'w': '🍉', 'x': '❌', 'y': '🍠',
+            'z': '🦓', ' ': '💧', ';': '🌱'
+        };
+
+        // Cookie functions
+        function setCookie(name, value, days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + date.toUTCString();
+            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+        }
+
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for(let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+
+        // Initialize game
+        function init() {
+            // Load saved level from cookie
+            const savedLevel = getCookie('gatorTypingLevel');
+            if (savedLevel) {
+                currentLevel = parseInt(savedLevel);
+            }
+
+            // Keep admin level range in sync with total levels
+            const adminLevelInput = document.getElementById('admin-level');
+            if (adminLevelInput) {
+                adminLevelInput.max = String(levels.length);
+            }
+            
+            loadLevel(currentLevel);
+            createKeyboard();
+        }
+
+        function loadLevel(level) {
+            if (level > levels.length) {
+                showVictory(true); // Game complete
+                return;
+            }
+
+            currentLevel = level;
+            currentLetterIndex = 0;
+            correctCount = 0;
+            
+            const levelData = levels[level - 1];
+            currentText = levelData.text;
+            
+            document.getElementById('current-level').textContent = level;
+            const sectionLabel = document.getElementById('current-section');
+            if (sectionLabel) {
+                sectionLabel.textContent = level <= 15 ? '(Section 1)' : '(Section 2)';
+            }
+            document.getElementById('instructions').textContent = levelData.description;
+            
+            displayText();
+            updateAlligatorSize();
+            highlightLevelKeys();
+            
+            // Save progress
+            setCookie('gatorTypingLevel', level, 365);
+        }
+
+        function updateSignAndFlag() {
+            const isSection2 = currentLevel >= SECTION_2_START;
+            const swampBoard = document.getElementById('swamp-sign-board');
+            const victoryBoard = document.getElementById('victory-sign-board');
+
+            if (swampBoard) {
+                swampBoard.innerHTML = isSection2
+                    ? 'YOU MUST BE<br>THIS TALL<br>TO SKATE'
+                    : 'YOU MUST BE<br>THIS TALL<br>TO RIDE';
+            }
+            if (victoryBoard) {
+                victoryBoard.innerHTML = isSection2
+                    ? 'YOU MUST BE<br>THIS TALL<br>TO SKATE'
+                    : 'YOU MUST BE<br>THIS TALL<br>TO RIDE';
+            }
+
+            // Hide flags - gator size is the main progress indicator
+            const swampFlag = document.getElementById('swamp-progress-flag');
+            const victoryFlag = document.getElementById('victory-progress-flag');
+            if (swampFlag) swampFlag.style.display = 'none';
+            if (victoryFlag) victoryFlag.style.display = 'none';
+        }
+
+        function displayText() {
+            const display = document.getElementById('text-display');
+            display.innerHTML = '';
+            
+            for (let i = 0; i < currentText.length; i++) {
+                const span = document.createElement('span');
+                span.className = 'letter';
+                // Show underscore for spaces
+                span.textContent = currentText[i] === ' ' ? '_' : currentText[i];
+                
+                if (i === currentLetterIndex) {
+                    span.classList.add('current');
+                } else if (i < currentLetterIndex) {
+                    span.classList.add('completed');
+                }
+                
+                display.appendChild(span);
+            }
+        }
+
+        function createKeyboard() {
+            const container = document.getElementById('keyboard-container');
+            
+            const rows = [
+                ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
+                ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';'],
+                ['z', 'x', 'c', 'v', 'b', 'n', 'm']
+            ];
+            
+            rows.forEach(row => {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'keyboard-row';
+                
+                row.forEach(key => {
+                    const keyDiv = document.createElement('div');
+                    keyDiv.className = 'key';
+                    keyDiv.textContent = key.toUpperCase();
+                    keyDiv.id = 'key-' + key;
+                    rowDiv.appendChild(keyDiv);
+                });
+                
+                container.appendChild(rowDiv);
+            });
+            
+            // Add space bar
+            const spaceRow = document.createElement('div');
+            spaceRow.className = 'keyboard-row';
+            const spaceKey = document.createElement('div');
+            spaceKey.className = 'key space';
+            spaceKey.textContent = 'SPACE';
+            spaceKey.id = 'key- ';
+            spaceRow.appendChild(spaceKey);
+            container.appendChild(spaceRow);
+            
+            highlightLevelKeys();
+        }
+
+        function highlightLevelKeys() {
+            // Reset all keys
+            document.querySelectorAll('.key').forEach(key => {
+                key.style.opacity = '0.3';
+                key.style.backgroundColor = 'white';
+            });
+            
+            // Highlight current level keys
+            const levelData = levels[currentLevel - 1];
+            levelData.keys.forEach(key => {
+                const keyElement = document.getElementById('key-' + key);
+                if (keyElement) {
+                    keyElement.style.opacity = '1';
+                    keyElement.style.backgroundColor = '#FFF9E6';
+                }
+            });
+        }
+
+        function updateAlligatorSize() {
+            const gator = document.getElementById('alligator');
+            const baseSize = 60;
+            const sizeIncrease = (currentLevel - 1) * 5;
+            gator.style.fontSize = (baseSize + sizeIncrease) + 'px';
+            
+            // Update swamp sign height to match final gator size
+            const maxLevelForThisSection = currentLevel <= SECTION_1_END ? SECTION_1_END : SECTION_2_END;
+            const finalSize = baseSize + (maxLevelForThisSection - 1) * 5;
+            document.querySelector('#swamp-sign .sign-pole').style.height = (finalSize * 1.2) + 'px';
+
+            updateSignAndFlag();
+        }
+
+        function throwFood(letter) {
+            const food = document.createElement('div');
+            food.className = 'food';
+            food.textContent = foodMap[letter] || '🍪';
+            
+            const swamp = document.getElementById('swamp-area');
+            swamp.appendChild(food);
+            
+            const gator = document.getElementById('alligator');
+            gator.classList.add('eating');
+            
+            setTimeout(() => {
+                food.remove();
+                gator.classList.remove('eating');
+            }, 1000);
+        }
+
+        function showVictory(gameComplete = false) {
+            const victoryScreen = document.getElementById('victory-screen');
+            const victoryMessage = document.getElementById('victory-message');
+            const gatorGrowth = document.getElementById('gator-growth');
+            const growthContainer = document.getElementById('growth-container');
+            const skateboard = document.getElementById('skateboard-container');
+            const victoryTitle = document.getElementById('victory-title');
+            const rollerCoaster = document.getElementById('roller-coaster-container');
+            
+            if (gameComplete) {
+                if (victoryTitle) victoryTitle.textContent = "All Levels Complete! 🎉";
+                victoryMessage.textContent = "Level 30 complete! Your gator skateboards down the mountain and splash-lands in the snow!";
+                document.getElementById('next-level-btn').textContent = "Play Again";
+                // Show final animation, hide growth container
+                growthContainer.style.display = 'none';
+                skateboard.style.display = 'block';
+                if (rollerCoaster) rollerCoaster.style.display = 'none';
+            } else if (currentLevel === SECTION_1_END) {
+                if (victoryTitle) victoryTitle.textContent = "Section 1 Complete! 🎉";
+                victoryMessage.innerHTML = "You did it! Time for the water slide ride! 🛝<br>Next: keep helping your gator get even bigger so he's ready for the next ride!";
+                document.getElementById('next-level-btn').textContent = "Start Section 2";
+                growthContainer.style.display = 'none';
+                if (rollerCoaster) rollerCoaster.style.display = 'block';
+                skateboard.style.display = 'none';
+            } else {
+                if (victoryTitle) victoryTitle.textContent = "Level Complete! 🎉";
+                if (currentLevel >= SECTION_2_START) {
+                    victoryMessage.textContent = "Keep helping your gator get even bigger so he’s ready for the next ride!";
+                } else {
+                    victoryMessage.textContent = "Great job! Your gator is growing!";
+                }
+                document.getElementById('next-level-btn').textContent = "Next Level";
+                growthContainer.style.display = 'flex';
+                skateboard.style.display = 'none';
+                if (rollerCoaster) rollerCoaster.style.display = 'none';
+                
+                // Calculate gator size and sign height using same proportions as swamp
+                // Swamp uses baseSize=60, growth=5 per level, sign ratio=1.2
+                // Victory uses same ratio but scaled up for prominence
+                const maxLevelForThisSection = currentLevel <= SECTION_1_END ? SECTION_1_END : SECTION_2_END;
+                const baseSize = 60;
+                const growthPerLevel = 5;
+                const signRatio = 1.2;
+                const victoryScale = 1.5; // Scale factor for victory screen
+                
+                const currentGatorSize = baseSize + (currentLevel - 1) * growthPerLevel;
+                const finalGatorSize = baseSize + (maxLevelForThisSection - 1) * growthPerLevel;
+                
+                gatorGrowth.style.fontSize = (currentGatorSize * victoryScale) + 'px';
+                document.querySelector('#victory-sign .sign-pole').style.height = (finalGatorSize * signRatio * victoryScale) + 'px';
+            }
+            
+            updateSignAndFlag();
+            victoryScreen.style.display = 'flex';
+        }
+
+        // Keyboard event listener
+        document.addEventListener('keydown', (e) => {
+            // Check if victory screen is showing
+            if (document.getElementById('victory-screen').style.display === 'flex') {
+                // Allow Enter key to advance to next level
+                if (e.key === 'Enter') {
+                    document.getElementById('next-level-btn').click();
+                }
+                return;
+            }
+            
+            const key = e.key.toLowerCase();
+            const expectedKey = currentText[currentLetterIndex];
+            
+            // Highlight key press
+            const keyElement = document.getElementById('key-' + key);
+            if (keyElement) {
+                keyElement.classList.add('pressed');
+                setTimeout(() => {
+                    keyElement.classList.remove('pressed');
+                }, 200);
+            }
+            
+            if (key === expectedKey) {
+                // Correct key
+                correctCount++;
+                throwFood(key);
+                currentLetterIndex++;
+                
+                if (currentLetterIndex >= currentText.length) {
+                    // Level complete
+                    setTimeout(() => {
+                        // Check if this is the final level
+                        const isGameComplete = currentLevel >= levels.length;
+                        showVictory(isGameComplete);
+                    }, 500);
+                } else {
+                    displayText();
+                }
+            } else {
+                // Incorrect key
+                const currentLetter = document.querySelectorAll('.letter')[currentLetterIndex];
+                if (currentLetter) {
+                    currentLetter.classList.add('incorrect');
+                    setTimeout(() => {
+                        currentLetter.classList.remove('incorrect');
+                    }, 300);
+                }
+            }
+        });
+
+        // Next level button
+        document.getElementById('next-level-btn').addEventListener('click', () => {
+            document.getElementById('victory-screen').style.display = 'none';
+            
+            if (currentLevel >= levels.length) {
+                // Reset to level 1
+                loadLevel(1);
+            } else {
+                loadLevel(currentLevel + 1);
+            }
+        });
+
+        // Admin mode
+        document.getElementById('level-tracker').addEventListener('click', () => {
+            document.getElementById('admin-modal').style.display = 'flex';
+            document.getElementById('admin-password').value = '';
+            document.getElementById('admin-level').value = '';
+            document.getElementById('admin-error').style.display = 'none';
+            document.getElementById('admin-password').focus();
+        });
+
+        document.getElementById('admin-cancel-btn').addEventListener('click', () => {
+            document.getElementById('admin-modal').style.display = 'none';
+        });
+
+        document.getElementById('admin-go-btn').addEventListener('click', () => {
+            const password = document.getElementById('admin-password').value;
+            const level = parseInt(document.getElementById('admin-level').value);
+            
+            if (password === 'admin' && level >= 1 && level <= levels.length) {
+                document.getElementById('admin-modal').style.display = 'none';
+                document.getElementById('victory-screen').style.display = 'none';
+                loadLevel(level);
+            } else {
+                document.getElementById('admin-error').style.display = 'block';
+            }
+        });
+
+        // Allow Enter key in admin modal
+        document.getElementById('admin-level').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                document.getElementById('admin-go-btn').click();
+            }
+        });
+
+        document.getElementById('admin-password').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                document.getElementById('admin-level').focus();
+            }
+        });
+
+        // Start the game
+        init();
+    </script>
+</body>
+</html>
+
