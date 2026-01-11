@@ -210,11 +210,61 @@
       text-align: center;
     }
     #toast.show { display: block; }
+
+    .treat-stage {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 18px;
+      margin: 14px 0 8px;
+      min-height: 120px;
+      user-select: none;
+    }
+    .treat-stage .gator-eat {
+      font-size: 92px;
+      transform: scaleX(-1);
+      animation: gator-chomp 1.1s ease-in-out infinite;
+      filter: saturate(1.02);
+    }
+    .treat-stage .treat {
+      font-size: 62px;
+      animation: treat-to-mouth 1.1s ease-in-out infinite;
+      transform-origin: center;
+    }
+    .treat-stage .sparkle {
+      font-size: 28px;
+      opacity: 0.0;
+      animation: sparkle-pop 1.1s ease-in-out infinite;
+    }
+
+    @keyframes gator-chomp {
+      0%, 55% { transform: scaleX(-1) translateY(0px) scale(1); }
+      65% { transform: scaleX(-1) translateY(-2px) scale(1.06) rotate(2deg); }
+      78% { transform: scaleX(-1) translateY(1px) scale(0.98) rotate(-3deg); }
+      100% { transform: scaleX(-1) translateY(0px) scale(1); }
+    }
+
+    @keyframes treat-to-mouth {
+      0% { opacity: 0; transform: translateX(140px) translateY(-34px) scale(1); }
+      12% { opacity: 1; }
+      55% { opacity: 1; transform: translateX(26px) translateY(-10px) scale(1); }
+      72% { opacity: 1; transform: translateX(6px) translateY(-2px) scale(0.7); }
+      82% { opacity: 0; transform: translateX(0px) translateY(2px) scale(0.15); }
+      100% { opacity: 0; transform: translateX(0px) translateY(2px) scale(0.15); }
+    }
+
+    @keyframes sparkle-pop {
+      0%, 60% { opacity: 0; transform: translateY(0px) scale(0.6); }
+      70% { opacity: 0.9; transform: translateY(-10px) scale(1.1); }
+      85% { opacity: 0.0; transform: translateY(-16px) scale(1.2); }
+      100% { opacity: 0; transform: translateY(-16px) scale(1.2); }
+    }
   </style>
 </head>
 <body>
   <div id="app">
     <div id="hud">
+      <div class="pill"><span>🏁</span><span id="hud-level">Level: 1 / 12</span></div>
       <div class="pill"><span>🐊</span><span id="hud-mode">Aim: Left</span></div>
       <div class="pill"><span>🎯</span><span id="hud-score">Score: 0</span></div>
       <div class="pill"><span>⚡</span><span id="hud-streak">Streak: 0</span></div>
@@ -242,14 +292,15 @@
             <div class="key" id="key-j">J<small>aim right (jaguars 🐆)</small></div>
           </div>
           <p>
-            Build streaks to fill the <b>cake meter</b>. If enemies reach you, you lose hearts.
+            Beat <b>12 levels</b>. Each level ends when you fill the <b>cake meter</b>.
+            If enemies reach you, you lose hearts.
           </p>
           <div class="btn-row">
             <button id="start-btn">Start</button>
             <button class="secondary" id="practice-btn" title="Start slower">Practice Mode</button>
           </div>
           <p style="font-size: 14px; opacity: 0.8; margin-top: 10px;">
-            Tip: Press <b>F</b> and <b>J</b> to aim. Press <b>Space</b> to shoot. Only those three keys matter.
+            Tip: Press <b>F</b>/<b>J</b> to aim, <b>Space</b> to shoot. After levels 4, 8, and 12 your gator gets a treat!
           </p>
         </div>
       </div>
@@ -273,6 +324,7 @@
     const startBtn = document.getElementById('start-btn');
     const practiceBtn = document.getElementById('practice-btn');
 
+    const hudLevel = document.getElementById('hud-level');
     const hudMode = document.getElementById('hud-mode');
     const hudScore = document.getElementById('hud-score');
     const hudStreak = document.getElementById('hud-streak');
@@ -301,15 +353,38 @@
       showToast._t = window.setTimeout(() => toast.classList.remove('show'), ms);
     }
 
+    const TOTAL_LEVELS = 12;
+    const LEVELS = [
+      // 12 levels, gently ramping difficulty. (Intervals are seconds, speeds are px/s.)
+      { name: 'Warm-up', minInterval: 1.05, maxInterval: 1.55, baseSpeed: 130, speedRamp: 120, cakePerHit: 12, cakeStreakBonus: 0.45 },
+      { name: 'Steady',  minInterval: 0.95, maxInterval: 1.40, baseSpeed: 140, speedRamp: 135, cakePerHit: 12, cakeStreakBonus: 0.42 },
+      { name: 'Focus',   minInterval: 0.85, maxInterval: 1.25, baseSpeed: 150, speedRamp: 155, cakePerHit: 11, cakeStreakBonus: 0.40 },
+      { name: 'Quick Eyes', minInterval: 0.78, maxInterval: 1.15, baseSpeed: 160, speedRamp: 170, cakePerHit: 11, cakeStreakBonus: 0.38 },
+
+      { name: 'F/J Switch', minInterval: 0.70, maxInterval: 1.05, baseSpeed: 168, speedRamp: 185, cakePerHit: 10, cakeStreakBonus: 0.36 },
+      { name: 'Faster Swarm', minInterval: 0.62, maxInterval: 0.98, baseSpeed: 175, speedRamp: 205, cakePerHit: 10, cakeStreakBonus: 0.34 },
+      { name: 'No Peeking', minInterval: 0.56, maxInterval: 0.92, baseSpeed: 182, speedRamp: 225, cakePerHit: 9, cakeStreakBonus: 0.32 },
+      { name: 'Rapid Aim', minInterval: 0.50, maxInterval: 0.86, baseSpeed: 188, speedRamp: 250, cakePerHit: 9, cakeStreakBonus: 0.30 },
+
+      { name: 'Hard Mode', minInterval: 0.46, maxInterval: 0.82, baseSpeed: 194, speedRamp: 270, cakePerHit: 8, cakeStreakBonus: 0.28 },
+      { name: 'Swamp Rush', minInterval: 0.42, maxInterval: 0.78, baseSpeed: 200, speedRamp: 290, cakePerHit: 8, cakeStreakBonus: 0.26 },
+      { name: 'Lightning', minInterval: 0.38, maxInterval: 0.72, baseSpeed: 208, speedRamp: 315, cakePerHit: 7, cakeStreakBonus: 0.24 },
+      { name: 'Final Cake', minInterval: 0.34, maxInterval: 0.66, baseSpeed: 216, speedRamp: 340, cakePerHit: 7, cakeStreakBonus: 0.22 },
+    ];
+
+    const TREAT_BY_SET = ['🍪', '🍩', '🧁'];
+
     const state = {
       running: false,
       practice: false,
       aimDir: -1, // -1 left, +1 right
+      level: 1,
       score: 0,
       streak: 0,
       lives: 3,
       cake: 0, // 0..100
-      elapsed: 0,
+      elapsed: 0, // total elapsed (for subtle background motion)
+      levelElapsed: 0,
       spawnT: 0,
       shotCooldown: 0,
       missedShots: 0,
@@ -323,29 +398,41 @@
     const particles = [];
 
     function resetGame({ practice = false } = {}) {
-      state.running = true;
       state.practice = practice;
-      state.aimDir = -1;
       state.score = 0;
+      state.elapsed = 0;
+      state.level = 1;
+      state.win = false;
+      state.lose = false;
+      startLevel(1);
+    }
+
+    function startLevel(levelNumber) {
+      state.level = Math.max(1, Math.min(TOTAL_LEVELS, levelNumber));
+      state.running = true;
+      state.aimDir = -1;
       state.streak = 0;
       state.lives = 3;
       state.cake = 0;
-      state.elapsed = 0;
+      state.levelElapsed = 0;
       state.spawnT = 0;
       state.shotCooldown = 0;
       state.missedShots = 0;
-      state.win = false;
-      state.lose = false;
       state.lastHitAt = 0;
+
       enemies.length = 0;
       shots.length = 0;
       particles.length = 0;
+
       overlay.classList.add('hidden');
       updateHud();
-      showToast('F = aim left, J = aim right, Space = shoot 💦', 1200);
+
+      const cfg = LEVELS[state.level - 1];
+      showToast(`Level ${state.level}/${TOTAL_LEVELS}: ${cfg.name}`, 1100);
     }
 
     function updateHud() {
+      hudLevel.textContent = `Level: ${state.level} / ${TOTAL_LEVELS}`;
       hudMode.textContent = `Aim: ${state.aimDir < 0 ? 'Left' : 'Right'}`;
       hudScore.textContent = `Score: ${state.score}`;
       hudStreak.textContent = `Streak: ${state.streak}`;
@@ -381,9 +468,11 @@
       const x = side === 'left' ? -40 : (w + 40);
       const y = rand(h * 0.18, groundY - h * 0.18);
 
-      const difficulty = clamp01(state.elapsed / (state.practice ? 85 : 60));
-      const baseSpeed = state.practice ? 110 : 140;
-      const speed = baseSpeed + difficulty * (state.practice ? 150 : 230) + Math.min(140, state.streak * 2);
+      const cfg = LEVELS[state.level - 1];
+      const rampSeconds = state.practice ? 26 : 20;
+      const difficulty = clamp01(state.levelElapsed / rampSeconds);
+      const practiceMult = state.practice ? 0.86 : 1.0;
+      const speed = (cfg.baseSpeed + difficulty * cfg.speedRamp + Math.min(160, state.streak * 2.2)) * practiceMult;
       const emoji = side === 'left' ? '🪰' : '🐆';
       const r = side === 'left' ? 18 : 22;
 
@@ -478,19 +567,96 @@
       if (restartPractice) restartPractice.addEventListener('click', () => resetGame({ practice: true }));
     }
 
+    function showSetVictory({ treatEmoji, title, message, nextLabel, onNext }) {
+      state.running = false;
+      overlay.innerHTML = `
+        <div class="card">
+          <h1>${title}</h1>
+          <p style="white-space: pre-line">${message}</p>
+          <div class="treat-stage" aria-label="Gator eating treat animation">
+            <div class="sparkle">✨</div>
+            <div class="gator-eat">🐊</div>
+            <div class="treat">${treatEmoji}</div>
+            <div class="sparkle">✨</div>
+          </div>
+          <div class="big-keys" aria-label="Controls">
+            <div class="key">F<small>aim left (🪰)</small></div>
+            <div class="key space">SPACE<small>shoot (💦)</small></div>
+            <div class="key">J<small>aim right (🐆)</small></div>
+          </div>
+          <div class="btn-row">
+            <button id="next-btn">${nextLabel}</button>
+            <button class="secondary" id="restart-btn">Restart</button>
+          </div>
+          <p style="font-size: 14px; opacity: 0.8; margin-top: 10px;">
+            Keep thumbs on Space and index fingers on F/J — speed rewards staying in position.
+          </p>
+        </div>
+      `;
+      overlay.classList.remove('hidden');
+
+      const nextBtn = overlay.querySelector('#next-btn');
+      const restartBtn = overlay.querySelector('#restart-btn');
+      if (nextBtn) nextBtn.addEventListener('click', onNext);
+      if (restartBtn) restartBtn.addEventListener('click', () => resetGame({ practice: state.practice }));
+    }
+
+    function completeLevel() {
+      const levelJustBeat = state.level;
+      const isSetEnd = levelJustBeat % 4 === 0;
+      const isFinal = levelJustBeat === TOTAL_LEVELS;
+
+      // Quick flow for non-set levels: short toast + auto-advance.
+      if (!isSetEnd) {
+        state.running = false;
+        overlay.classList.add('hidden');
+        showToast(`Level ${levelJustBeat} complete!`, 800);
+        window.setTimeout(() => startLevel(levelJustBeat + 1), 900);
+        return;
+      }
+
+      // Set victory screens at levels 4, 8, 12.
+      const setIndex = Math.floor((levelJustBeat - 1) / 4); // 0..2
+      const treat = TREAT_BY_SET[setIndex] || '🍪';
+
+      if (isFinal) {
+        showSetVictory({
+          treatEmoji: treat,
+          title: 'All 12 levels complete! 🍰',
+          message: `Your gator earned the cake — and a final treat!\nFinal score: ${state.score}`,
+          nextLabel: 'Play Again',
+          onNext: () => resetGame({ practice: state.practice }),
+        });
+        return;
+      }
+
+      const nextLevel = levelJustBeat + 1;
+      showSetVictory({
+        treatEmoji: treat,
+        title: `Set complete! Level ${levelJustBeat} cleared!`,
+        message: `Treat time!\nNext up: Level ${nextLevel}/${TOTAL_LEVELS}.`,
+        nextLabel: `Start Level ${nextLevel}`,
+        onNext: () => startLevel(nextLevel),
+      });
+    }
+
     function tick(dt) {
       resizeCanvasToDisplaySize();
       const w = canvas.width;
       const h = canvas.height;
 
       state.elapsed += dt;
+      state.levelElapsed += dt;
       state.spawnT -= dt;
       state.shotCooldown = Math.max(0, state.shotCooldown - dt);
 
       // Spawn rate ramps up over time and streak.
-      const difficulty = clamp01(state.elapsed / (state.practice ? 85 : 60));
-      const minInterval = state.practice ? 0.62 : 0.42;
-      const maxInterval = state.practice ? 1.25 : 1.05;
+      const cfg = LEVELS[state.level - 1];
+      const rampSeconds = state.practice ? 26 : 20;
+      const difficulty = clamp01(state.levelElapsed / rampSeconds);
+      const practiceIntervalMult = state.practice ? 1.18 : 1.0;
+      const minInterval = cfg.minInterval * practiceIntervalMult;
+      const maxInterval = cfg.maxInterval * practiceIntervalMult;
       const streakBoost = Math.min(0.18, state.streak * 0.004);
       const spawnInterval = (maxInterval - (maxInterval - minInterval) * difficulty) * (1 - streakBoost);
 
@@ -567,7 +733,9 @@
             state.streak += 1;
             const streakBonus = Math.min(40, state.streak * 2);
             state.score += 10 + streakBonus;
-            state.cake = Math.min(100, state.cake + 6 + Math.min(10, state.streak) * 0.35);
+            const cfg = LEVELS[state.level - 1];
+            const cakeGain = cfg.cakePerHit + Math.min(10, state.streak) * cfg.cakeStreakBonus;
+            state.cake = Math.min(100, state.cake + cakeGain);
             hit = true;
             break;
           }
@@ -575,9 +743,9 @@
         if (hit) continue;
       }
 
-      if (state.cake >= 100 && !state.win) {
+      if (state.cake >= 100 && !state.win && !state.lose) {
         updateHud();
-        endGame(true);
+        completeLevel();
         return;
       }
 
@@ -791,7 +959,10 @@
     practiceBtn.addEventListener('click', () => resetGame({ practice: true }));
     overlay.addEventListener('click', (e) => {
       // Clicking the dark backdrop shouldn't restart by accident.
-      if (e.target === overlay) showToast('Click Start to begin.', 700);
+      if (e.target === overlay) {
+        const hasStart = !!overlay.querySelector('#start-btn');
+        showToast(hasStart ? 'Click Start to begin.' : 'Use the buttons to continue.', 700);
+      }
     });
 
     window.addEventListener('keydown', onKeyDown, { passive: false });
