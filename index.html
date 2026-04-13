@@ -94,6 +94,11 @@
             color: #fff;
         }
 
+        #start-section-4-btn {
+            background: linear-gradient(135deg, #ff9f8a, #e86f5c);
+            color: #fff;
+        }
+
         .start-helper {
             margin-top: 18px;
             font-size: 16px;
@@ -905,6 +910,58 @@
             color: #fff;
         }
 
+        body.afternoon-theme {
+            background: linear-gradient(to bottom, #f7a18f 0%, #f7bf8f 45%, #f6e0a7 100%);
+        }
+
+        body.afternoon-theme #level-tracker,
+        body.afternoon-theme #instructions {
+            background: rgba(255, 244, 230, 0.92);
+            color: #6a2f2a;
+            box-shadow: 0 6px 14px rgba(124, 67, 43, 0.24);
+        }
+
+        body.afternoon-theme #text-display {
+            background: rgba(255, 248, 236, 0.95);
+            color: #5b281f;
+        }
+
+        body.afternoon-theme .letter.current {
+            background: #f57d69;
+            color: #fff;
+        }
+
+        body.afternoon-theme .letter.completed {
+            color: #538c4f;
+        }
+
+        body.afternoon-theme #swamp-area {
+            background: linear-gradient(to bottom, #cb7d6e 0%, #ac6959 52%, #855447 100%);
+            border-left-color: #6d4037;
+        }
+
+        body.afternoon-theme #swamp-water {
+            background: linear-gradient(to bottom, #5da6c6 0%, #3a7593 100%);
+            border-top-color: #9fd2e8;
+        }
+
+        body.afternoon-theme .key {
+            background: #ffe9dc;
+            border-color: #9b4f41;
+            color: #5b2b24;
+        }
+
+        body.afternoon-theme .key.highlight {
+            background: #ffc085;
+            color: #5a2500;
+        }
+
+        body.afternoon-theme .key.pressed {
+            background: #ff927d;
+            border-color: #8c3a2d;
+            color: #fff;
+        }
+
         #dance-party-container {
             width: 560px;
             height: 350px;
@@ -1114,6 +1171,118 @@
             0% { transform: translateX(-50%) rotate(0deg); }
             100% { transform: translateX(-50%) rotate(360deg); }
         }
+
+        #nap-dream-container {
+            width: 560px;
+            height: 350px;
+            margin: 24px auto 30px;
+            border-radius: 24px;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #ffd4bf 0%, #ffe8c8 52%, #fff3d6 100%);
+            border: 3px solid #d69679;
+        }
+
+        #dream-clouds {
+            position: absolute;
+            top: 24px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 34px;
+            opacity: 0.9;
+            animation: dream-drift 8s ease-in-out infinite;
+        }
+
+        @keyframes dream-drift {
+            0%, 100% { transform: translateX(0px); }
+            50% { transform: translateX(16px); }
+        }
+
+        #nap-bed {
+            position: absolute;
+            left: 50%;
+            bottom: 54px;
+            transform: translateX(-50%);
+            font-size: 138px;
+            z-index: 5;
+        }
+
+        #sleepy-gator {
+            position: absolute;
+            left: 50%;
+            bottom: 94px;
+            transform: translateX(-50%) scaleX(-1);
+            font-size: 82px;
+            z-index: 6;
+            animation: sleepy-breathe 2.8s ease-in-out infinite;
+        }
+
+        @keyframes sleepy-breathe {
+            0%, 100% { transform: translateX(-50%) scaleX(-1) translateY(0); }
+            50% { transform: translateX(-50%) scaleX(-1) translateY(-6px); }
+        }
+
+        .dream-sheep {
+            position: absolute;
+            font-size: 44px;
+            top: 100px;
+            animation: sheep-hop 6s linear infinite;
+            z-index: 7;
+        }
+
+        .dream-sheep.one { animation-delay: 0s; }
+        .dream-sheep.two { animation-delay: 2s; }
+        .dream-sheep.three { animation-delay: 4s; }
+
+        @keyframes sheep-hop {
+            0% {
+                left: -70px;
+                transform: translateY(0) scale(0.85);
+                opacity: 0;
+            }
+            8% { opacity: 1; }
+            25% { transform: translateY(-14px) scale(1); }
+            50% { transform: translateY(0) scale(1); }
+            75% { transform: translateY(-14px) scale(1); }
+            92% { opacity: 1; }
+            100% {
+                left: 620px;
+                transform: translateY(0) scale(0.9);
+                opacity: 0;
+            }
+        }
+
+        .sleep-z {
+            position: absolute;
+            right: 130px;
+            bottom: 130px;
+            font-size: 36px;
+            color: #8f4f87;
+            font-weight: bold;
+            z-index: 8;
+            animation: z-float 2.4s ease-out infinite;
+        }
+
+        .sleep-z.z2 {
+            right: 96px;
+            bottom: 156px;
+            font-size: 30px;
+            animation-delay: 0.7s;
+        }
+
+        .sleep-z.z3 {
+            right: 76px;
+            bottom: 182px;
+            font-size: 24px;
+            animation-delay: 1.3s;
+        }
+
+        @keyframes z-float {
+            0% { opacity: 0; transform: translateY(0) scale(0.8); }
+            20% { opacity: 1; transform: translateY(-10px) scale(1); }
+            100% { opacity: 0; transform: translateY(-48px) scale(1.15); }
+        }
     </style>
 </head>
 <body>
@@ -1133,6 +1302,10 @@
                 <button id="start-section-3-btn" class="section-start-btn">
                     Section 3<br>
                     <span style="font-size: 15px; font-weight: 600;">Morning training + bottom-row keys (Levels 31-45)</span>
+                </button>
+                <button id="start-section-4-btn" class="section-start-btn">
+                    Section 4<br>
+                    <span style="font-size: 15px; font-weight: 600;">Afternoon sentence keys + dream nap finale (Levels 46-60)</span>
                 </button>
             </div>
             <div class="start-helper">Tip: Click Level in the top bar anytime for admin jump mode.</div>
@@ -1237,6 +1410,17 @@
                 <div id="bike-wheels">⭕ ⭕</div>
                 <div id="bike-road"></div>
             </div>
+            <div id="nap-dream-container" style="display: none;">
+                <div id="dream-clouds">☁️ ☁️ ☁️</div>
+                <div class="dream-sheep one">🐑</div>
+                <div class="dream-sheep two">🐑</div>
+                <div class="dream-sheep three">🐑</div>
+                <div id="nap-bed">🛏️</div>
+                <div id="sleepy-gator">🐊</div>
+                <div class="sleep-z z1">Z</div>
+                <div class="sleep-z z2">Z</div>
+                <div class="sleep-z z3">Z</div>
+            </div>
             <p id="victory-message"></p>
             <button id="next-level-btn">Next Level</button>
         </div>
@@ -1248,7 +1432,7 @@
             <label>Password:</label>
             <input type="password" id="admin-password" placeholder="Enter password">
             <label>Level:</label>
-            <input type="number" id="admin-level" placeholder="Enter level number" min="1" max="45">
+            <input type="number" id="admin-level" placeholder="Enter level number" min="1" max="60">
             <div>
                 <button id="admin-go-btn">Go</button>
                 <button id="admin-cancel-btn">Cancel</button>
@@ -1319,13 +1503,33 @@
             { name: 'Section 3 Finale', keys: ['z', 'x', 'c', 'v', 'b', 'n', 'm', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', ' '], text: 'morning bike ride victory for gator', description: 'Final level! Ride into a sunny bike victory.' }
         ];
 
-        const levels = [...section1Levels, ...section2Levels, ...section3Levels];
+        const section4Levels = [
+            { name: 'Section 4 Warmup', keys: ['z', 'x', 'c', 'v', 'b', 'n', 'm', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', ' ', ','], text: 'afternoon energy, steady typing', description: 'Afternoon starts. Feed your gator and settle into sentence rhythm.' },
+            { name: 'Comma Key', keys: ['z', 'x', 'c', 'v', 'b', 'n', 'm', 'a', 's', 'd', 'f', 'j', 'k', 'l', ' ', ','], text: 'calm, slow, smooth, steady', description: 'Add commas for pause control.' },
+            { name: 'Comma Flow', keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ' ', ','], text: 'ask, add, fall, lad', description: 'Practice smooth comma spacing.' },
+            { name: 'Period Key', keys: ['z', 'x', 'c', 'v', 'b', 'n', 'm', 'a', 's', 'd', 'f', 'j', 'k', 'l', ' ', ',', '.'], text: 'nap time. calm mind. soft bed.', description: 'Add periods to close each sentence.' },
+            { name: 'Period Flow', keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ' ', ',', '.'], text: 'fall. ask. lad. safe.', description: 'Short sentence endings with periods.' },
+            { name: 'Slash Key', keys: ['z', 'x', 'c', 'v', 'b', 'n', 'm', 'a', 's', 'd', 'f', 'j', 'k', 'l', ' ', ',', '.', '/'], text: 'nap/rest calm/slow', description: 'Add slash as the next right-side key.' },
+            { name: 'Punctuation Mix I', keys: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ' ', ',', '.', '/'], text: 'type, rest. nap/relax', description: 'Mix letters with commas, periods, and slash.' },
+            { name: 'Punctuation Mix II', keys: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ' ', ',', '.', '/'], text: 'slow, steady. cozy/quiet', description: 'Keep the rhythm smooth and controlled.' },
+            { name: 'Apostrophe Key', keys: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ' ', ',', '.', '/', '\''], text: "gator's bed, it's cozy.", description: 'Add apostrophe for contractions and possessives.' },
+            { name: 'Apostrophe Flow', keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ' ', ',', '.', '\'', ';'], text: "it's safe. gator's calm.", description: 'Practice apostrophes with sentence punctuation.' },
+            { name: 'Semicolon Review', keys: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ' ', ',', '.', '/', '\''], text: 'soft rest; slow breath. nap time.', description: 'Bring semicolon back with all punctuation.' },
+            { name: 'Sentence Builder I', keys: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ' ', ',', '.', '/', '\''], text: "the gator's energy is low, so he rests.", description: 'Type a full sentence with punctuation.' },
+            { name: 'Sentence Builder II', keys: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ' ', ',', '.', '/', '\''], text: "sheep drift by, and the gator dreams.", description: 'More sentence rhythm before the finale.' },
+            { name: 'Energy Wind-Down', keys: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ' ', ',', '.', '/', '\''], text: "typing's done, now rest. zzz.", description: 'Wind down for a peaceful nap reward.' },
+            { name: 'Section 4 Finale', keys: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ' ', ',', '.', '/', '\''], text: "afternoon complete. sheep float by; zzz.", description: 'Final level! Tuck in for a dreamy afternoon nap.' }
+        ];
+
+        const levels = [...section1Levels, ...section2Levels, ...section3Levels, ...section4Levels];
         const SECTION_1_START = 1;
         const SECTION_1_END = section1Levels.length;
         const SECTION_2_START = SECTION_1_END + 1;
         const SECTION_2_END = SECTION_2_START + section2Levels.length - 1;
         const SECTION_3_START = SECTION_2_END + 1;
-        const SECTION_3_END = levels.length;
+        const SECTION_3_END = SECTION_3_START + section3Levels.length - 1;
+        const SECTION_4_START = SECTION_3_END + 1;
+        const SECTION_4_END = levels.length;
         const LEVELS_PER_SECTION = section1Levels.length;
 
         const foodMap = {
@@ -1334,16 +1538,19 @@
             'k': '🥝', 'l': '🍋', 'm': '🍄', 'n': '🥜', 'o': '🫒',
             'p': '🍕', 'q': '🧁', 'r': '🍚', 's': '🍓', 't': '🍅',
             'u': '☂️', 'v': '🧇', 'w': '🍉', 'x': '❌', 'y': '🍠',
-            'z': '🦓', ' ': '💧', ';': '🌱'
+            'z': '🦓', ' ': '💧', ';': '🌱', ',': '🥜', '.': '🍪',
+            '/': '🧃', '\'': '🍯'
         };
 
         function getSectionForLevel(level) {
             if (level <= SECTION_1_END) return 1;
             if (level <= SECTION_2_END) return 2;
-            return 3;
+            if (level <= SECTION_3_END) return 3;
+            return 4;
         }
 
         function getSectionBounds(section) {
+            if (section === 4) return { start: SECTION_4_START, end: SECTION_4_END };
             if (section === 3) return { start: SECTION_3_START, end: SECTION_3_END };
             if (section === 2) return { start: SECTION_2_START, end: SECTION_2_END };
             return { start: SECTION_1_START, end: SECTION_1_END };
@@ -1353,12 +1560,14 @@
             const section = getSectionForLevel(level);
             if (section === 1) return level;
             if (section === 2) return level - SECTION_1_END;
-            return level - SECTION_2_END;
+            if (section === 3) return level - SECTION_2_END;
+            return level - SECTION_3_END;
         }
 
         function applySectionTheme(sectionNumber) {
             document.body.classList.toggle('evening-theme', sectionNumber === 2);
             document.body.classList.toggle('morning-theme', sectionNumber === 3);
+            document.body.classList.toggle('afternoon-theme', sectionNumber === 4);
         }
 
         function setCookie(name, value, days) {
@@ -1392,6 +1601,7 @@
             document.getElementById('start-section-1-btn').addEventListener('click', () => startSelectedSection(1));
             document.getElementById('start-section-2-btn').addEventListener('click', () => startSelectedSection(2));
             document.getElementById('start-section-3-btn').addEventListener('click', () => startSelectedSection(3));
+            document.getElementById('start-section-4-btn').addEventListener('click', () => startSelectedSection(4));
         }
 
         function loadLevel(level) {
@@ -1528,18 +1738,20 @@
             const skateboard = document.getElementById('skateboard-container');
             const danceParty = document.getElementById('dance-party-container');
             const bikeRide = document.getElementById('bike-ride-container');
+            const napDream = document.getElementById('nap-dream-container');
 
             if (rollerCoaster) rollerCoaster.style.display = 'none';
             if (skateboard) skateboard.style.display = 'none';
             if (danceParty) danceParty.style.display = 'none';
             if (bikeRide) bikeRide.style.display = 'none';
+            if (napDream) napDream.style.display = 'none';
 
             if (gameComplete) {
-                victoryTitle.textContent = 'Morning Bike Victory! 🚲';
-                victoryMessage.textContent = 'Your gator is full of energy and cruises into a sunny morning bike ride!';
+                victoryTitle.textContent = 'Afternoon Nap Victory! 😴';
+                victoryMessage.textContent = 'Your gator is full, cozy, and falls asleep in bed while sheep float by and ZZZs drift overhead.';
                 nextButton.textContent = 'Choose Section';
                 growthContainer.style.display = 'none';
-                if (bikeRide) bikeRide.style.display = 'block';
+                if (napDream) napDream.style.display = 'block';
             } else if (currentLevel === SECTION_1_END) {
                 victoryTitle.textContent = 'Section 1 Complete! 🎉';
                 victoryMessage.innerHTML = 'You did it! Time for the water slide ride! 🛝<br>Next stop: Section 2 evening training.';
@@ -1552,9 +1764,17 @@
                 nextButton.textContent = 'Start Section 3';
                 growthContainer.style.display = 'none';
                 if (danceParty) danceParty.style.display = 'block';
+            } else if (currentLevel === SECTION_3_END) {
+                victoryTitle.textContent = 'Section 3 Complete! 🚲';
+                victoryMessage.innerHTML = 'Morning bike ride unlocked!<br>Now start Section 4 afternoon training for a dreamy nap reward.';
+                nextButton.textContent = 'Start Section 4';
+                growthContainer.style.display = 'none';
+                if (bikeRide) bikeRide.style.display = 'block';
             } else {
                 victoryTitle.textContent = 'Level Complete! 🎉';
-                if (selectedSection === 3) {
+                if (selectedSection === 4) {
+                    victoryMessage.textContent = 'Great feed! Your gator is getting sleepier and ready for an afternoon nap.';
+                } else if (selectedSection === 3) {
                     victoryMessage.textContent = 'Great feed! Your gator has even more morning bike-ride energy.';
                 } else if (selectedSection === 2) {
                     victoryMessage.textContent = 'Great feed! Your gator gets bigger and gains dance-party energy.';
@@ -1620,6 +1840,7 @@
             if (currentLevel >= levels.length) return showStartScreen();
             if (currentLevel === SECTION_1_END) return startSelectedSection(2);
             if (currentLevel === SECTION_2_END) return startSelectedSection(3);
+            if (currentLevel === SECTION_3_END) return startSelectedSection(4);
             loadLevel(currentLevel + 1);
         });
 
