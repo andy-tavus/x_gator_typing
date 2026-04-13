@@ -99,6 +99,11 @@
             color: #fff;
         }
 
+        #start-section-5-btn {
+            background: linear-gradient(135deg, #6f71d8, #3f4894);
+            color: #fff;
+        }
+
         .start-helper {
             margin-top: 18px;
             font-size: 16px;
@@ -962,6 +967,58 @@
             color: #fff;
         }
 
+        body.dusk-theme {
+            background: linear-gradient(to bottom, #2f2a6a 0%, #4b3c89 45%, #f08f62 100%);
+        }
+
+        body.dusk-theme #level-tracker,
+        body.dusk-theme #instructions {
+            background: rgba(29, 22, 66, 0.9);
+            color: #f8e8ff;
+            box-shadow: 0 6px 14px rgba(13, 9, 33, 0.45);
+        }
+
+        body.dusk-theme #text-display {
+            background: rgba(35, 25, 73, 0.94);
+            color: #fff6ff;
+        }
+
+        body.dusk-theme .letter.current {
+            background: #ffb35c;
+            color: #3a1f00;
+        }
+
+        body.dusk-theme .letter.completed {
+            color: #9ce9be;
+        }
+
+        body.dusk-theme #swamp-area {
+            background: linear-gradient(to bottom, #4b3d82 0%, #3b2f66 52%, #2b234d 100%);
+            border-left-color: #1f193b;
+        }
+
+        body.dusk-theme #swamp-water {
+            background: linear-gradient(to bottom, #4b58a8 0%, #2d346d 100%);
+            border-top-color: #7682d6;
+        }
+
+        body.dusk-theme .key {
+            background: #2a325b;
+            border-color: #9aa4ff;
+            color: #f5f3ff;
+        }
+
+        body.dusk-theme .key.highlight {
+            background: #ffca73;
+            color: #3b2200;
+        }
+
+        body.dusk-theme .key.pressed {
+            background: #7f92ff;
+            border-color: #d2d9ff;
+            color: #fff;
+        }
+
         #dance-party-container {
             width: 560px;
             height: 350px;
@@ -1283,6 +1340,65 @@
             20% { opacity: 1; transform: translateY(-10px) scale(1); }
             100% { opacity: 0; transform: translateY(-48px) scale(1.15); }
         }
+
+        #fireworks-container {
+            width: 560px;
+            height: 350px;
+            margin: 24px auto 30px;
+            border-radius: 24px;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #17143d 0%, #2c2464 48%, #4a2f66 100%);
+            border: 3px solid #7a73ca;
+        }
+
+        #dusk-moon {
+            position: absolute;
+            right: 32px;
+            top: 18px;
+            font-size: 56px;
+            z-index: 3;
+        }
+
+        #city-lights {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 58px;
+            text-align: center;
+            font-size: 54px;
+            opacity: 0.85;
+            z-index: 2;
+        }
+
+        #fireworks-gator {
+            position: absolute;
+            left: 50%;
+            bottom: 24px;
+            transform: translateX(-50%) scaleX(-1);
+            font-size: 96px;
+            z-index: 4;
+        }
+
+        .firework-burst {
+            position: absolute;
+            font-size: 38px;
+            z-index: 5;
+            animation: fireworks-pop 2.2s ease-out infinite;
+        }
+
+        .firework-burst.one { left: 90px; top: 70px; animation-delay: 0s; }
+        .firework-burst.two { left: 210px; top: 38px; animation-delay: 0.55s; }
+        .firework-burst.three { right: 140px; top: 76px; animation-delay: 1.1s; }
+        .firework-burst.four { right: 60px; top: 126px; animation-delay: 1.65s; }
+
+        @keyframes fireworks-pop {
+            0% { opacity: 0; transform: scale(0.2); }
+            12% { opacity: 1; transform: scale(1.1); }
+            32% { opacity: 1; transform: scale(1.4); }
+            60% { opacity: 0.85; transform: scale(1.9); }
+            100% { opacity: 0; transform: scale(2.4); }
+        }
     </style>
 </head>
 <body>
@@ -1306,6 +1422,10 @@
                 <button id="start-section-4-btn" class="section-start-btn">
                     Section 4<br>
                     <span style="font-size: 15px; font-weight: 600;">Afternoon sentence keys + dream nap finale (Levels 46-60)</span>
+                </button>
+                <button id="start-section-5-btn" class="section-start-btn">
+                    Section 5<br>
+                    <span style="font-size: 15px; font-weight: 600;">Dusk mastery + fireworks finale (Levels 61-75)</span>
                 </button>
             </div>
             <div class="start-helper">Tip: Click Level in the top bar anytime for admin jump mode.</div>
@@ -1421,6 +1541,15 @@
                 <div class="sleep-z z2">Z</div>
                 <div class="sleep-z z3">Z</div>
             </div>
+            <div id="fireworks-container" style="display: none;">
+                <div id="dusk-moon">🌙</div>
+                <div id="city-lights">🌆</div>
+                <div class="firework-burst one">🎆</div>
+                <div class="firework-burst two">🎇</div>
+                <div class="firework-burst three">✨</div>
+                <div class="firework-burst four">🎆</div>
+                <div id="fireworks-gator">🐊</div>
+            </div>
             <p id="victory-message"></p>
             <button id="next-level-btn">Next Level</button>
         </div>
@@ -1432,7 +1561,7 @@
             <label>Password:</label>
             <input type="password" id="admin-password" placeholder="Enter password">
             <label>Level:</label>
-            <input type="number" id="admin-level" placeholder="Enter level number" min="1" max="60">
+            <input type="number" id="admin-level" placeholder="Enter level number" min="1" max="75">
             <div>
                 <button id="admin-go-btn">Go</button>
                 <button id="admin-cancel-btn">Cancel</button>
@@ -1521,7 +1650,25 @@
             { name: 'Section 4 Finale', keys: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ' ', ',', '.', '/', '\''], text: "afternoon complete. sheep float by; zzz.", description: 'Final level! Tuck in for a dreamy afternoon nap.' }
         ];
 
-        const levels = [...section1Levels, ...section2Levels, ...section3Levels, ...section4Levels];
+        const section5Levels = [
+            { name: 'Section 5 Warmup', keys: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ' ', ',', '.', '/', '\''], text: "dusk arrives, and the gator trains.", description: 'Dusk training begins. Build energy for a fireworks show!' },
+            { name: 'Question Mark Key', keys: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ' ', '?'], text: 'ready for dusk?', description: 'Add question mark using Shift + /.' },
+            { name: 'Question Flow', keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ' ', '?', '\''], text: "it's ready? is it safe?", description: 'Use question marks with smooth timing.' },
+            { name: 'Exclamation Key', keys: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ' ', '!'], text: 'big win!', description: 'Add exclamation mark using Shift + 1.' },
+            { name: 'Exclamation Flow', keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ' ', '!', '.'], text: 'dash! jump! land!', description: 'Practice quick exclamation endings.' },
+            { name: 'Colon Key', keys: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ' ', ':'], text: 'next show: fireworks', description: 'Add colon using Shift + semicolon.' },
+            { name: 'Colon Flow', keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ';', ':', ' '], text: 'plan: feed gator', description: 'Use colon as a clear pause marker.' },
+            { name: 'Dusk Punctuation Mix I', keys: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ' ', ',', '.', '/', '\'', '?', '!', ':'], text: "ready? set: type, feed!", description: 'Mix punctuation smoothly in short phrases.' },
+            { name: 'Dusk Punctuation Mix II', keys: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ' ', ',', '.', '/', '\'', '?', '!', ':'], text: "it's dusk: calm, quick, ready!", description: 'Keep control as punctuation variety grows.' },
+            { name: 'Sentence Sparks I', keys: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ' ', ',', '.', '/', '\'', '?', '!', ':'], text: "the gator asks: ready for lights?", description: 'Longer sentence with question and colon.' },
+            { name: 'Sentence Sparks II', keys: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ' ', ',', '.', '/', '\'', '?', '!', ':'], text: "crowd cheers, and the sky pops!", description: 'Add excitement with punctuation rhythm.' },
+            { name: 'Accuracy at Dusk', keys: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ' ', ',', '.', '/', '\'', '?', '!', ':'], text: "slow now: type clear, stay sharp.", description: 'Slow down and prioritize clean typing.' },
+            { name: 'Energy Builder', keys: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ' ', ',', '.', '/', '\'', '?', '!', ':'], text: "feed the gator: more power, more sparkle!", description: 'Final energy push before the show.' },
+            { name: 'Fireworks Practice', keys: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ' ', ',', '.', '/', '\'', '?', '!', ':'], text: "look up: sparkle, flash, boom!", description: 'Practice fireworks phrases and punctuation.' },
+            { name: 'Section 5 Finale', keys: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ' ', ',', '.', '/', '\'', '?', '!', ':'], text: "dusk complete: fireworks light the sky!", description: 'Final level! Celebrate with a dusk fireworks victory!' }
+        ];
+
+        const levels = [...section1Levels, ...section2Levels, ...section3Levels, ...section4Levels, ...section5Levels];
         const SECTION_1_START = 1;
         const SECTION_1_END = section1Levels.length;
         const SECTION_2_START = SECTION_1_END + 1;
@@ -1529,7 +1676,9 @@
         const SECTION_3_START = SECTION_2_END + 1;
         const SECTION_3_END = SECTION_3_START + section3Levels.length - 1;
         const SECTION_4_START = SECTION_3_END + 1;
-        const SECTION_4_END = levels.length;
+        const SECTION_4_END = SECTION_4_START + section4Levels.length - 1;
+        const SECTION_5_START = SECTION_4_END + 1;
+        const SECTION_5_END = levels.length;
         const LEVELS_PER_SECTION = section1Levels.length;
 
         const foodMap = {
@@ -1539,17 +1688,19 @@
             'p': '🍕', 'q': '🧁', 'r': '🍚', 's': '🍓', 't': '🍅',
             'u': '☂️', 'v': '🧇', 'w': '🍉', 'x': '❌', 'y': '🍠',
             'z': '🦓', ' ': '💧', ';': '🌱', ',': '🥜', '.': '🍪',
-            '/': '🧃', '\'': '🍯'
+            '/': '🧃', '\'': '🍯', '?': '❓', '!': '🍿', ':': '🥤'
         };
 
         function getSectionForLevel(level) {
             if (level <= SECTION_1_END) return 1;
             if (level <= SECTION_2_END) return 2;
             if (level <= SECTION_3_END) return 3;
-            return 4;
+            if (level <= SECTION_4_END) return 4;
+            return 5;
         }
 
         function getSectionBounds(section) {
+            if (section === 5) return { start: SECTION_5_START, end: SECTION_5_END };
             if (section === 4) return { start: SECTION_4_START, end: SECTION_4_END };
             if (section === 3) return { start: SECTION_3_START, end: SECTION_3_END };
             if (section === 2) return { start: SECTION_2_START, end: SECTION_2_END };
@@ -1561,13 +1712,15 @@
             if (section === 1) return level;
             if (section === 2) return level - SECTION_1_END;
             if (section === 3) return level - SECTION_2_END;
-            return level - SECTION_3_END;
+            if (section === 4) return level - SECTION_3_END;
+            return level - SECTION_4_END;
         }
 
         function applySectionTheme(sectionNumber) {
             document.body.classList.toggle('evening-theme', sectionNumber === 2);
             document.body.classList.toggle('morning-theme', sectionNumber === 3);
             document.body.classList.toggle('afternoon-theme', sectionNumber === 4);
+            document.body.classList.toggle('dusk-theme', sectionNumber === 5);
         }
 
         function setCookie(name, value, days) {
@@ -1602,6 +1755,7 @@
             document.getElementById('start-section-2-btn').addEventListener('click', () => startSelectedSection(2));
             document.getElementById('start-section-3-btn').addEventListener('click', () => startSelectedSection(3));
             document.getElementById('start-section-4-btn').addEventListener('click', () => startSelectedSection(4));
+            document.getElementById('start-section-5-btn').addEventListener('click', () => startSelectedSection(5));
         }
 
         function loadLevel(level) {
@@ -1637,6 +1791,8 @@
             let signText = 'YOU MUST BE<br>THIS TALL<br>TO RIDE';
             if (selectedSection === 2) signText = 'YOU MUST BE<br>THIS TALL<br>TO DANCE';
             if (selectedSection === 3) signText = 'YOU MUST BE<br>THIS TALL<br>TO BIKE';
+            if (selectedSection === 4) signText = 'YOU MUST BE<br>THIS TALL<br>TO NAP';
+            if (selectedSection === 5) signText = 'YOU MUST BE<br>THIS TALL<br>TO CELEBRATE';
 
             if (swampBoard) swampBoard.innerHTML = signText;
             if (victoryBoard) victoryBoard.innerHTML = signText;
@@ -1739,19 +1895,21 @@
             const danceParty = document.getElementById('dance-party-container');
             const bikeRide = document.getElementById('bike-ride-container');
             const napDream = document.getElementById('nap-dream-container');
+            const fireworksShow = document.getElementById('fireworks-container');
 
             if (rollerCoaster) rollerCoaster.style.display = 'none';
             if (skateboard) skateboard.style.display = 'none';
             if (danceParty) danceParty.style.display = 'none';
             if (bikeRide) bikeRide.style.display = 'none';
             if (napDream) napDream.style.display = 'none';
+            if (fireworksShow) fireworksShow.style.display = 'none';
 
             if (gameComplete) {
-                victoryTitle.textContent = 'Afternoon Nap Victory! 😴';
-                victoryMessage.textContent = 'Your gator is full, cozy, and falls asleep in bed while sheep float by and ZZZs drift overhead.';
+                victoryTitle.textContent = 'Dusk Fireworks Victory! 🎆';
+                victoryMessage.textContent = 'Your gator finishes dusk training and celebrates with a giant fireworks show!';
                 nextButton.textContent = 'Choose Section';
                 growthContainer.style.display = 'none';
-                if (napDream) napDream.style.display = 'block';
+                if (fireworksShow) fireworksShow.style.display = 'block';
             } else if (currentLevel === SECTION_1_END) {
                 victoryTitle.textContent = 'Section 1 Complete! 🎉';
                 victoryMessage.innerHTML = 'You did it! Time for the water slide ride! 🛝<br>Next stop: Section 2 evening training.';
@@ -1770,9 +1928,17 @@
                 nextButton.textContent = 'Start Section 4';
                 growthContainer.style.display = 'none';
                 if (bikeRide) bikeRide.style.display = 'block';
+            } else if (currentLevel === SECTION_4_END) {
+                victoryTitle.textContent = 'Section 4 Complete! 😴';
+                victoryMessage.innerHTML = 'Afternoon nap unlocked!<br>Now start Section 5 dusk training for a fireworks finale.';
+                nextButton.textContent = 'Start Section 5';
+                growthContainer.style.display = 'none';
+                if (napDream) napDream.style.display = 'block';
             } else {
                 victoryTitle.textContent = 'Level Complete! 🎉';
-                if (selectedSection === 4) {
+                if (selectedSection === 5) {
+                    victoryMessage.textContent = 'Great feed! Your gator is glowing with dusk energy for the fireworks show.';
+                } else if (selectedSection === 4) {
                     victoryMessage.textContent = 'Great feed! Your gator is getting sleepier and ready for an afternoon nap.';
                 } else if (selectedSection === 3) {
                     victoryMessage.textContent = 'Great feed! Your gator has even more morning bike-ride energy.';
@@ -1841,6 +2007,7 @@
             if (currentLevel === SECTION_1_END) return startSelectedSection(2);
             if (currentLevel === SECTION_2_END) return startSelectedSection(3);
             if (currentLevel === SECTION_3_END) return startSelectedSection(4);
+            if (currentLevel === SECTION_4_END) return startSelectedSection(5);
             loadLevel(currentLevel + 1);
         });
 
