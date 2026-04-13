@@ -89,6 +89,11 @@
             color: #fff;
         }
 
+        #start-section-3-btn {
+            background: linear-gradient(135deg, #ffb347, #ff8b3d);
+            color: #fff;
+        }
+
         .start-helper {
             margin-top: 18px;
             font-size: 16px;
@@ -848,6 +853,58 @@
             color: #ffffff;
         }
 
+        body.morning-theme {
+            background: linear-gradient(to bottom, #f7bb6c 0%, #ffd88b 45%, #ffefb4 100%);
+        }
+
+        body.morning-theme #level-tracker,
+        body.morning-theme #instructions {
+            background: rgba(255, 247, 224, 0.92);
+            color: #5b3418;
+            box-shadow: 0 6px 14px rgba(140, 88, 25, 0.22);
+        }
+
+        body.morning-theme #text-display {
+            background: rgba(255, 252, 240, 0.95);
+            color: #4f2d0f;
+        }
+
+        body.morning-theme .letter.current {
+            background: #ffab52;
+            color: #4a2100;
+        }
+
+        body.morning-theme .letter.completed {
+            color: #4ca05d;
+        }
+
+        body.morning-theme #swamp-area {
+            background: linear-gradient(to bottom, #efad58 0%, #d79448 55%, #b87633 100%);
+            border-left-color: #8b5a28;
+        }
+
+        body.morning-theme #swamp-water {
+            background: linear-gradient(to bottom, #69b8d7 0%, #3e8caf 100%);
+            border-top-color: #8fd9f2;
+        }
+
+        body.morning-theme .key {
+            background: #fff3dc;
+            border-color: #ae7136;
+            color: #5f3b18;
+        }
+
+        body.morning-theme .key.highlight {
+            background: #ffd272;
+            color: #4a2602;
+        }
+
+        body.morning-theme .key.pressed {
+            background: #ffb16a;
+            border-color: #8f4b1f;
+            color: #fff;
+        }
+
         #dance-party-container {
             width: 560px;
             height: 350px;
@@ -958,6 +1015,105 @@
             85% { opacity: 1; transform: translateY(-100px) scale(1.1); }
             100% { opacity: 0; transform: translateY(-120px) scale(1.2); }
         }
+
+        #bike-ride-container {
+            width: 560px;
+            height: 350px;
+            margin: 24px auto 30px;
+            border-radius: 24px;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #ffc97f 0%, #ffe5a9 55%, #f6f0cb 100%);
+            border: 3px solid #de9546;
+        }
+
+        #bike-sun {
+            position: absolute;
+            right: 28px;
+            top: 14px;
+            font-size: 68px;
+            animation: sun-pulse 2.2s ease-in-out infinite;
+        }
+
+        @keyframes sun-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.07); }
+        }
+
+        #bike-clouds {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 42px;
+            text-align: center;
+            font-size: 46px;
+            animation: clouds-drift 10s linear infinite;
+        }
+
+        @keyframes clouds-drift {
+            0% { transform: translateX(-24px); }
+            100% { transform: translateX(24px); }
+        }
+
+        #bike-road {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 120px;
+            background: linear-gradient(to bottom, #788691 0%, #59646d 100%);
+        }
+
+        #bike-road::before {
+            content: '';
+            position: absolute;
+            top: 54px;
+            left: -35px;
+            right: -35px;
+            height: 8px;
+            background: repeating-linear-gradient(
+                90deg,
+                #ffe27e 0 28px,
+                transparent 28px 56px
+            );
+            animation: lane-scroll 0.8s linear infinite;
+        }
+
+        @keyframes lane-scroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(-56px); }
+        }
+
+        #bike-gator {
+            position: absolute;
+            bottom: 74px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 104px;
+            animation: bike-bounce 0.65s ease-in-out infinite;
+            z-index: 4;
+        }
+
+        @keyframes bike-bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0) scaleX(-1); }
+            50% { transform: translateX(-50%) translateY(-9px) scaleX(-1); }
+        }
+
+        #bike-wheels {
+            position: absolute;
+            bottom: 44px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 72px;
+            letter-spacing: 42px;
+            z-index: 3;
+            animation: wheel-spin 0.4s linear infinite;
+        }
+
+        @keyframes wheel-spin {
+            0% { transform: translateX(-50%) rotate(0deg); }
+            100% { transform: translateX(-50%) rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -973,6 +1129,10 @@
                 <button id="start-section-2-btn" class="section-start-btn">
                     Section 2<br>
                     <span style="font-size: 15px; font-weight: 600;">Evening training + new top-row keys (Levels 16-30)</span>
+                </button>
+                <button id="start-section-3-btn" class="section-start-btn">
+                    Section 3<br>
+                    <span style="font-size: 15px; font-weight: 600;">Morning training + bottom-row keys (Levels 31-45)</span>
                 </button>
             </div>
             <div class="start-helper">Tip: Click Level in the top bar anytime for admin jump mode.</div>
@@ -1070,6 +1230,13 @@
                 <div id="dance-gator">🐊</div>
                 <div id="dance-floor"></div>
             </div>
+            <div id="bike-ride-container" style="display: none;">
+                <div id="bike-sun">🌞</div>
+                <div id="bike-clouds">☁️ ☁️ ☁️</div>
+                <div id="bike-gator">🐊</div>
+                <div id="bike-wheels">⭕ ⭕</div>
+                <div id="bike-road"></div>
+            </div>
             <p id="victory-message"></p>
             <button id="next-level-btn">Next Level</button>
         </div>
@@ -1081,7 +1248,7 @@
             <label>Password:</label>
             <input type="password" id="admin-password" placeholder="Enter password">
             <label>Level:</label>
-            <input type="number" id="admin-level" placeholder="Enter level number" min="1" max="30">
+            <input type="number" id="admin-level" placeholder="Enter level number" min="1" max="45">
             <div>
                 <button id="admin-go-btn">Go</button>
                 <button id="admin-cancel-btn">Cancel</button>
@@ -1091,7 +1258,6 @@
     </div>
 
     <script>
-        // Game state
         let currentLevel = 1;
         let currentLetterIndex = 0;
         let currentText = '';
@@ -1100,201 +1266,68 @@
         let hasStarted = false;
 
         const section1Levels = [
-            {
-                name: 'Space Bar',
-                keys: [' '],
-                text: '         ',
-                description: 'Press the space bar with your thumbs!'
-            },
-            {
-                name: 'Letter F',
-                keys: ['f', ' '],
-                text: 'fff fff fff fff',
-                description: 'Press F with your left pointer finger!'
-            },
-            {
-                name: 'Letter J',
-                keys: ['j', ' '],
-                text: 'jjj jjj jjj jjj',
-                description: 'Press J with your right pointer finger!'
-            },
-            {
-                name: 'F and J Together',
-                keys: ['f', 'j'],
-                text: 'fff jjj fjf jfj fjj jff',
-                description: 'Alternate between F and J!'
-            },
-            {
-                name: 'Space with F and J',
-                keys: ['f', 'j', ' '],
-                text: 'f j f j fff jjj f j',
-                description: 'Add spaces between letters!'
-            },
-            {
-                name: 'Letter D',
-                keys: ['f', 'd', ' '],
-                text: 'ddd fff ddd fff dfd fdf',
-                description: 'Add D with your left middle finger!'
-            },
-            {
-                name: 'Letter K',
-                keys: ['j', 'k', ' '],
-                text: 'kkk jjj kkk jjj kjk jkj',
-                description: 'Add K with your right middle finger!'
-            },
-            {
-                name: 'D and K Practice',
-                keys: ['f', 'j', 'd', 'k'],
-                text: 'ddd kkk fjf jfj dkd kdk fdjk',
-                description: 'Practice all four keys together!'
-            },
-            {
-                name: 'Home Row - A & ;',
-                keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ';'],
-                text: 'aaa ;;; asdf jkl; fdsa ;lkj',
-                description: 'Complete the home row!'
-            },
-            {
-                name: 'Home Row Complete',
-                keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ';'],
-                text: 'a;sldkfj fads jkls ;lak sjdf kfld',
-                description: 'Practice all home row keys!'
-            },
-            {
-                name: 'Home Row with Spaces',
-                keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ';', ' '],
-                text: 'as df jk l; ad fj ks d; fl',
-                description: 'Use spaces with home row keys!'
-            },
-            {
-                name: 'Top Row - G & H',
-                keys: ['f', 'g', 'h', 'j', ' '],
-                text: 'ggg hhh fgf jhj ghg hgh fghj',
-                description: 'Learn G and H above home row!'
-            },
-            {
-                name: 'Top Row - R & U',
-                keys: ['r', 'f', 'j', 'u', ' '],
-                text: 'rrr uuu rfr juj rur fuj',
-                description: 'Add R and U keys!'
-            },
-            {
-                name: 'Words!',
-                keys: ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ' '],
-                text: 'dad sad ask lad gag had hal',
-                description: 'Type real words!'
-            },
-            {
-                name: 'More Words',
-                keys: ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ' '],
-                text: 'fall hall dash all ask has',
-                description: 'Practice more words!'
-            }
+            { name: 'Space Bar', keys: [' '], text: '         ', description: 'Press the space bar with your thumbs!' },
+            { name: 'Letter F', keys: ['f', ' '], text: 'fff fff fff fff', description: 'Press F with your left pointer finger!' },
+            { name: 'Letter J', keys: ['j', ' '], text: 'jjj jjj jjj jjj', description: 'Press J with your right pointer finger!' },
+            { name: 'F and J Together', keys: ['f', 'j'], text: 'fff jjj fjf jfj fjj jff', description: 'Alternate between F and J!' },
+            { name: 'Space with F and J', keys: ['f', 'j', ' '], text: 'f j f j fff jjj f j', description: 'Add spaces between letters!' },
+            { name: 'Letter D', keys: ['f', 'd', ' '], text: 'ddd fff ddd fff dfd fdf', description: 'Add D with your left middle finger!' },
+            { name: 'Letter K', keys: ['j', 'k', ' '], text: 'kkk jjj kkk jjj kjk jkj', description: 'Add K with your right middle finger!' },
+            { name: 'D and K Practice', keys: ['f', 'j', 'd', 'k'], text: 'ddd kkk fjf jfj dkd kdk fdjk', description: 'Practice all four keys together!' },
+            { name: 'Home Row - A & ;', keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ';'], text: 'aaa ;;; asdf jkl; fdsa ;lkj', description: 'Complete the home row!' },
+            { name: 'Home Row Complete', keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ';'], text: 'a;sldkfj fads jkls ;lak sjdf kfld', description: 'Practice all home row keys!' },
+            { name: 'Home Row with Spaces', keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ';', ' '], text: 'as df jk l; ad fj ks d; fl', description: 'Use spaces with home row keys!' },
+            { name: 'Top Row - G & H', keys: ['f', 'g', 'h', 'j', ' '], text: 'ggg hhh fgf jhj ghg hgh fghj', description: 'Learn G and H above home row!' },
+            { name: 'Top Row - R & U', keys: ['r', 'f', 'j', 'u', ' '], text: 'rrr uuu rfr juj rur fuj', description: 'Add R and U keys!' },
+            { name: 'Words!', keys: ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ' '], text: 'dad sad ask lad gag had hal', description: 'Type real words!' },
+            { name: 'More Words', keys: ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ' '], text: 'fall hall dash all ask has', description: 'Practice more words!' }
         ];
 
-        // Section 2 keeps the same 15-level structure, but introduces the next top-row keys.
         const section2Levels = [
-            {
-                name: 'Section 2 Warmup',
-                keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ';', ' '],
-                text: 'as df jk l; ;l kj fd sa',
-                description: 'Evening mode! Feed your gator and build energy for the dance party.'
-            },
-            {
-                name: 'Top Row - E & I',
-                keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'e', 'i', ' '],
-                text: 'eee iii dee ski fed jill',
-                description: 'Add E and I with your middle fingers.'
-            },
-            {
-                name: 'E and I Flow',
-                keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'e', 'i', ' '],
-                text: 'de ki fe ji ed ik',
-                description: 'Stay smooth with E and I.'
-            },
-            {
-                name: 'Words with E and I',
-                keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'e', 'i', ' '],
-                text: 'side file asks deli',
-                description: 'Use E and I in simple words.'
-            },
-            {
-                name: 'Top Row - W & O',
-                keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'e', 'i', 'w', 'o', ' '],
-                text: 'wow ooo woe slow',
-                description: 'Now add W and O.'
-            },
-            {
-                name: 'W and O Flow',
-                keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'e', 'i', 'w', 'o', ' '],
-                text: 'wo ow so ol woe owl',
-                description: 'Practice W/O patterns with rhythm.'
-            },
-            {
-                name: 'Words with W O E I',
-                keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'e', 'i', 'w', 'o', ' '],
-                text: 'wide woke wise soil',
-                description: 'Mix your new top-row letters into words.'
-            },
-            {
-                name: 'Top Row Review - R & U',
-                keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'e', 'i', 'w', 'o', 'r', 'u', ' '],
-                text: 'rur uru sure user',
-                description: 'Bring back R and U for full-hand balance.'
-            },
-            {
-                name: 'Top Row - T & Y',
-                keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'e', 'i', 'w', 'o', 'r', 'u', 't', 'y', ' '],
-                text: 'tty yyt tryy tasty',
-                description: 'Add T and Y to keep moving outward.'
-            },
-            {
-                name: 'T and Y Flow',
-                keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'e', 'i', 'w', 'o', 'r', 'u', 't', 'y', ' '],
-                text: 'ty yt styy duty',
-                description: 'Short combos for T and Y control.'
-            },
-            {
-                name: 'Top Row - Q & P',
-                keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'e', 'i', 'w', 'o', 'r', 'u', 't', 'y', 'q', 'p', ' '],
-                text: 'qqq ppp quip soup',
-                description: 'Finish the top row with Q and P.'
-            },
-            {
-                name: 'Full Top Row Mix',
-                keys: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', ' '],
-                text: 'qwerty type your power',
-                description: 'Home row plus full top row together.'
-            },
-            {
-                name: 'Accuracy Words',
-                keys: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', ' '],
-                text: 'quiet party wrote',
-                description: 'Slow down and stay accurate.'
-            },
-            {
-                name: 'Energy Builder',
-                keys: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', ' '],
-                text: 'type your quiet party',
-                description: 'Feed-time phrase practice to power up your gator.'
-            },
-            {
-                name: 'Section 2 Finale',
-                keys: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', ' '],
-                text: 'party type; your power up',
-                description: 'Final level! One more feed run for the gator dance party!'
-            }
+            { name: 'Section 2 Warmup', keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ';', ' '], text: 'as df jk l; ;l kj fd sa', description: 'Evening mode! Feed your gator and build energy for the dance party.' },
+            { name: 'Top Row - E & I', keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'e', 'i', ' '], text: 'eee iii dee ski fed jill', description: 'Add E and I with your middle fingers.' },
+            { name: 'E and I Flow', keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'e', 'i', ' '], text: 'de ki fe ji ed ik', description: 'Stay smooth with E and I.' },
+            { name: 'Words with E and I', keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'e', 'i', ' '], text: 'side file asks deli', description: 'Use E and I in simple words.' },
+            { name: 'Top Row - W & O', keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'e', 'i', 'w', 'o', ' '], text: 'wow ooo woe slow', description: 'Now add W and O.' },
+            { name: 'W and O Flow', keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'e', 'i', 'w', 'o', ' '], text: 'wo ow so ol woe owl', description: 'Practice W/O patterns with rhythm.' },
+            { name: 'Words with W O E I', keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'e', 'i', 'w', 'o', ' '], text: 'wide woke wise soil', description: 'Mix your new top-row letters into words.' },
+            { name: 'Top Row Review - R & U', keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'e', 'i', 'w', 'o', 'r', 'u', ' '], text: 'rur uru sure user', description: 'Bring back R and U for full-hand balance.' },
+            { name: 'Top Row - T & Y', keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'e', 'i', 'w', 'o', 'r', 'u', 't', 'y', ' '], text: 'tty yyt tryy tasty', description: 'Add T and Y to keep moving outward.' },
+            { name: 'T and Y Flow', keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'e', 'i', 'w', 'o', 'r', 'u', 't', 'y', ' '], text: 'ty yt styy duty', description: 'Short combos for T and Y control.' },
+            { name: 'Top Row - Q & P', keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'e', 'i', 'w', 'o', 'r', 'u', 't', 'y', 'q', 'p', ' '], text: 'qqq ppp quip soup', description: 'Finish the top row with Q and P.' },
+            { name: 'Full Top Row Mix', keys: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', ' '], text: 'qwerty type your power', description: 'Home row plus full top row together.' },
+            { name: 'Accuracy Words', keys: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', ' '], text: 'quiet party wrote', description: 'Slow down and stay accurate.' },
+            { name: 'Energy Builder', keys: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', ' '], text: 'type your quiet party', description: 'Feed-time phrase practice to power up your gator.' },
+            { name: 'Section 2 Finale', keys: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', ' '], text: 'party type; your power up', description: 'Final level! One more feed run for the gator dance party!' }
         ];
 
-        const levels = [...section1Levels, ...section2Levels];
+        const section3Levels = [
+            { name: 'Section 3 Warmup', keys: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', ' '], text: 'type your power rise', description: 'Morning training starts. Feed your gator for bike-ride energy!' },
+            { name: 'Bottom Row - V & N', keys: ['v', 'n', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'e', 'i', 'o', 'u', ' '], text: 'vvv nnn van fin vine', description: 'Add V and N on the bottom row.' },
+            { name: 'V and N Flow', keys: ['v', 'n', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'e', 'i', 'o', 'u', ' '], text: 'vn nv iv in oven vain', description: 'Smooth V/N patterns with accuracy.' },
+            { name: 'Bottom Row - C & M', keys: ['c', 'm', 'v', 'n', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'e', 'i', 'o', 'u', ' '], text: 'ccc mmm cam mic comic', description: 'Add C and M for the next step.' },
+            { name: 'C and M Words', keys: ['c', 'm', 'v', 'n', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'e', 'i', 'o', 'u', ' '], text: 'civic music manic', description: 'Use C and M in short words.' },
+            { name: 'Bottom Row - B', keys: ['b', 'c', 'm', 'v', 'n', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'e', 'i', 'o', 'u', ' '], text: 'bbb cab bib tube', description: 'Add B with your index finger reach.' },
+            { name: 'B Mix', keys: ['b', 'c', 'm', 'v', 'n', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'e', 'i', 'o', 'u', ' '], text: 'ban cab vibe bean', description: 'Mix B with your learned keys.' },
+            { name: 'Bottom Row - X', keys: ['x', 'b', 'c', 'm', 'v', 'n', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'e', 'i', 'o', 'u', ' '], text: 'xxx fax mix box', description: 'Add X and keep your rhythm steady.' },
+            { name: 'X Words', keys: ['x', 'b', 'c', 'm', 'v', 'n', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'e', 'i', 'o', 'u', ' '], text: 'axis box mix exam', description: 'Practice X in real words.' },
+            { name: 'Bottom Row - Z', keys: ['z', 'x', 'b', 'c', 'm', 'v', 'n', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'e', 'i', 'o', 'u', 'y', ' '], text: 'zzz faze maze cozy', description: 'Add Z to complete your bottom-row set.' },
+            { name: 'Z Words', keys: ['z', 'x', 'b', 'c', 'm', 'v', 'n', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'e', 'i', 'o', 'u', 'y', ' '], text: 'zoom jazz zone buzz', description: 'Build confidence with Z patterns.' },
+            { name: 'Bottom Row Review', keys: ['z', 'x', 'c', 'v', 'b', 'n', 'm', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', ' '], text: 'zxcv bnm vcnm zxbn', description: 'Review all bottom-row keys together.' },
+            { name: 'All Rows Mix', keys: ['z', 'x', 'c', 'v', 'b', 'n', 'm', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', ' '], text: 'quick brown fox jumps', description: 'Now blend top, home, and bottom rows.' },
+            { name: 'Energy Builder', keys: ['z', 'x', 'c', 'v', 'b', 'n', 'm', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', ' '], text: 'feed the gator for bike power', description: 'Keep feeding your gator to charge morning ride energy.' },
+            { name: 'Section 3 Finale', keys: ['z', 'x', 'c', 'v', 'b', 'n', 'm', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', ' '], text: 'morning bike ride victory for gator', description: 'Final level! Ride into a sunny bike victory.' }
+        ];
 
+        const levels = [...section1Levels, ...section2Levels, ...section3Levels];
         const SECTION_1_START = 1;
         const SECTION_1_END = section1Levels.length;
         const SECTION_2_START = SECTION_1_END + 1;
-        const SECTION_2_END = levels.length;
+        const SECTION_2_END = SECTION_2_START + section2Levels.length - 1;
+        const SECTION_3_START = SECTION_2_END + 1;
+        const SECTION_3_END = levels.length;
         const LEVELS_PER_SECTION = section1Levels.length;
 
-        // Food emojis for each letter
         const foodMap = {
             'a': '🍎', 'b': '🍌', 'c': '🥕', 'd': '🍩', 'e': '🥚',
             'f': '🍟', 'g': '🍇', 'h': '🍯', 'i': '🍦', 'j': '🧃',
@@ -1305,21 +1338,27 @@
         };
 
         function getSectionForLevel(level) {
-            return level <= SECTION_1_END ? 1 : 2;
+            if (level <= SECTION_1_END) return 1;
+            if (level <= SECTION_2_END) return 2;
+            return 3;
         }
 
         function getSectionBounds(section) {
-            return section === 2
-                ? { start: SECTION_2_START, end: SECTION_2_END }
-                : { start: SECTION_1_START, end: SECTION_1_END };
+            if (section === 3) return { start: SECTION_3_START, end: SECTION_3_END };
+            if (section === 2) return { start: SECTION_2_START, end: SECTION_2_END };
+            return { start: SECTION_1_START, end: SECTION_1_END };
         }
 
         function getSectionLevel(level) {
-            return getSectionForLevel(level) === 1 ? level : level - SECTION_1_END;
+            const section = getSectionForLevel(level);
+            if (section === 1) return level;
+            if (section === 2) return level - SECTION_1_END;
+            return level - SECTION_2_END;
         }
 
         function applySectionTheme(sectionNumber) {
             document.body.classList.toggle('evening-theme', sectionNumber === 2);
+            document.body.classList.toggle('morning-theme', sectionNumber === 3);
         }
 
         function setCookie(name, value, days) {
@@ -1329,47 +1368,30 @@
             document.cookie = name + '=' + value + ';' + expires + ';path=/';
         }
 
-        function getCookie(name) {
-            const nameEQ = name + '=';
-            const ca = document.cookie.split(';');
-            for (let i = 0; i < ca.length; i++) {
-                let c = ca[i];
-                while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-                if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
-            }
-            return null;
-        }
-
         function showStartScreen() {
             hasStarted = false;
+            selectedSection = 1;
+            applySectionTheme(1);
             document.getElementById('start-screen').style.display = 'flex';
             document.getElementById('victory-screen').style.display = 'none';
         }
 
         function startSelectedSection(section) {
-            const bounds = getSectionBounds(section);
             selectedSection = section;
             hasStarted = true;
-            document.getElementById('start-screen').style.display = 'none';
-            loadLevel(bounds.start);
             setCookie('gatorTypingSelectedSection', String(section), 365);
+            document.getElementById('start-screen').style.display = 'none';
+            loadLevel(getSectionBounds(section).start);
         }
 
         function init() {
-            const adminLevelInput = document.getElementById('admin-level');
-            if (adminLevelInput) {
-                adminLevelInput.max = String(levels.length);
-            }
-
+            document.getElementById('admin-level').max = String(levels.length);
             createKeyboard();
             showStartScreen();
 
-            document.getElementById('start-section-1-btn').addEventListener('click', () => {
-                startSelectedSection(1);
-            });
-            document.getElementById('start-section-2-btn').addEventListener('click', () => {
-                startSelectedSection(2);
-            });
+            document.getElementById('start-section-1-btn').addEventListener('click', () => startSelectedSection(1));
+            document.getElementById('start-section-2-btn').addEventListener('click', () => startSelectedSection(2));
+            document.getElementById('start-section-3-btn').addEventListener('click', () => startSelectedSection(3));
         }
 
         function loadLevel(level) {
@@ -1382,17 +1404,13 @@
             selectedSection = getSectionForLevel(level);
             currentLetterIndex = 0;
             correctCount = 0;
-
             applySectionTheme(selectedSection);
 
             const levelData = levels[level - 1];
             currentText = levelData.text;
 
             document.getElementById('current-level').textContent = getSectionLevel(level);
-            const sectionLabel = document.getElementById('current-section');
-            if (sectionLabel) {
-                sectionLabel.textContent = `(Section ${selectedSection} • ${getSectionLevel(level)}/${LEVELS_PER_SECTION})`;
-            }
+            document.getElementById('current-section').textContent = `(Section ${selectedSection} • ${getSectionLevel(level)}/${LEVELS_PER_SECTION})`;
             document.getElementById('instructions').textContent = levelData.description;
 
             displayText();
@@ -1404,20 +1422,14 @@
         }
 
         function updateSignAndFlag() {
-            const isSection2 = selectedSection === 2;
             const swampBoard = document.getElementById('swamp-sign-board');
             const victoryBoard = document.getElementById('victory-sign-board');
+            let signText = 'YOU MUST BE<br>THIS TALL<br>TO RIDE';
+            if (selectedSection === 2) signText = 'YOU MUST BE<br>THIS TALL<br>TO DANCE';
+            if (selectedSection === 3) signText = 'YOU MUST BE<br>THIS TALL<br>TO BIKE';
 
-            if (swampBoard) {
-                swampBoard.innerHTML = isSection2
-                    ? 'YOU MUST BE<br>THIS TALL<br>TO DANCE'
-                    : 'YOU MUST BE<br>THIS TALL<br>TO RIDE';
-            }
-            if (victoryBoard) {
-                victoryBoard.innerHTML = isSection2
-                    ? 'YOU MUST BE<br>THIS TALL<br>TO DANCE'
-                    : 'YOU MUST BE<br>THIS TALL<br>TO RIDE';
-            }
+            if (swampBoard) swampBoard.innerHTML = signText;
+            if (victoryBoard) victoryBoard.innerHTML = signText;
 
             const swampFlag = document.getElementById('swamp-progress-flag');
             const victoryFlag = document.getElementById('victory-progress-flag');
@@ -1428,18 +1440,12 @@
         function displayText() {
             const display = document.getElementById('text-display');
             display.innerHTML = '';
-
             for (let i = 0; i < currentText.length; i++) {
                 const span = document.createElement('span');
                 span.className = 'letter';
                 span.textContent = currentText[i] === ' ' ? '_' : currentText[i];
-
-                if (i === currentLetterIndex) {
-                    span.classList.add('current');
-                } else if (i < currentLetterIndex) {
-                    span.classList.add('completed');
-                }
-
+                if (i === currentLetterIndex) span.classList.add('current');
+                else if (i < currentLetterIndex) span.classList.add('completed');
                 display.appendChild(span);
             }
         }
@@ -1447,7 +1453,6 @@
         function createKeyboard() {
             const container = document.getElementById('keyboard-container');
             container.innerHTML = '';
-
             const rows = [
                 ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
                 ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';'],
@@ -1457,7 +1462,6 @@
             rows.forEach((row) => {
                 const rowDiv = document.createElement('div');
                 rowDiv.className = 'keyboard-row';
-
                 row.forEach((key) => {
                     const keyDiv = document.createElement('div');
                     keyDiv.className = 'key';
@@ -1465,7 +1469,6 @@
                     keyDiv.id = 'key-' + key;
                     rowDiv.appendChild(keyDiv);
                 });
-
                 container.appendChild(rowDiv);
             });
 
@@ -1482,30 +1485,20 @@
         function highlightLevelKeys() {
             document.querySelectorAll('.key').forEach((key) => {
                 key.style.opacity = '0.3';
-                key.classList.remove('active-level-key');
             });
 
-            const levelData = levels[currentLevel - 1];
-            levelData.keys.forEach((key) => {
+            levels[currentLevel - 1].keys.forEach((key) => {
                 const keyElement = document.getElementById('key-' + key);
-                if (keyElement) {
-                    keyElement.style.opacity = '1';
-                    keyElement.classList.add('active-level-key');
-                }
+                if (keyElement) keyElement.style.opacity = '1';
             });
         }
 
         function updateAlligatorSize() {
-            const gator = document.getElementById('alligator');
             const baseSize = 60;
             const growthPerLevel = 5;
             const sectionLevel = getSectionLevel(currentLevel);
-            const sizeIncrease = (sectionLevel - 1) * growthPerLevel;
-            gator.style.fontSize = (baseSize + sizeIncrease) + 'px';
-
-            const finalSize = baseSize + (LEVELS_PER_SECTION - 1) * growthPerLevel;
-            document.querySelector('#swamp-sign .sign-pole').style.height = (finalSize * 1.2) + 'px';
-
+            document.getElementById('alligator').style.fontSize = (baseSize + (sectionLevel - 1) * growthPerLevel) + 'px';
+            document.querySelector('#swamp-sign .sign-pole').style.height = (baseSize + (LEVELS_PER_SECTION - 1) * growthPerLevel) * 1.2 + 'px';
             updateSignAndFlag();
         }
 
@@ -1513,13 +1506,10 @@
             const food = document.createElement('div');
             food.className = 'food';
             food.textContent = foodMap[letter] || '🍪';
-
             const swamp = document.getElementById('swamp-area');
             swamp.appendChild(food);
-
             const gator = document.getElementById('alligator');
             gator.classList.add('eating');
-
             setTimeout(() => {
                 food.remove();
                 gator.classList.remove('eating');
@@ -1531,47 +1521,56 @@
             const victoryMessage = document.getElementById('victory-message');
             const gatorGrowth = document.getElementById('gator-growth');
             const growthContainer = document.getElementById('growth-container');
+            const victoryTitle = document.getElementById('victory-title');
+            const nextButton = document.getElementById('next-level-btn');
+
+            const rollerCoaster = document.getElementById('roller-coaster-container');
             const skateboard = document.getElementById('skateboard-container');
             const danceParty = document.getElementById('dance-party-container');
-            const victoryTitle = document.getElementById('victory-title');
-            const rollerCoaster = document.getElementById('roller-coaster-container');
-            const nextButton = document.getElementById('next-level-btn');
+            const bikeRide = document.getElementById('bike-ride-container');
 
             if (rollerCoaster) rollerCoaster.style.display = 'none';
             if (skateboard) skateboard.style.display = 'none';
             if (danceParty) danceParty.style.display = 'none';
+            if (bikeRide) bikeRide.style.display = 'none';
 
             if (gameComplete) {
-                if (victoryTitle) victoryTitle.textContent = 'Dance Party Victory! 🪩';
-                victoryMessage.textContent = 'Your gator is full of evening energy and throws a swamp dance party!';
+                victoryTitle.textContent = 'Morning Bike Victory! 🚲';
+                victoryMessage.textContent = 'Your gator is full of energy and cruises into a sunny morning bike ride!';
                 nextButton.textContent = 'Choose Section';
                 growthContainer.style.display = 'none';
-                if (danceParty) danceParty.style.display = 'block';
+                if (bikeRide) bikeRide.style.display = 'block';
             } else if (currentLevel === SECTION_1_END) {
-                if (victoryTitle) victoryTitle.textContent = 'Section 1 Complete! 🎉';
-                victoryMessage.innerHTML = 'You did it! Time for the water slide ride! 🛝<br>Then jump into Section 2 evening training and new keys.';
+                victoryTitle.textContent = 'Section 1 Complete! 🎉';
+                victoryMessage.innerHTML = 'You did it! Time for the water slide ride! 🛝<br>Next stop: Section 2 evening training.';
                 nextButton.textContent = 'Start Section 2';
                 growthContainer.style.display = 'none';
                 if (rollerCoaster) rollerCoaster.style.display = 'block';
+            } else if (currentLevel === SECTION_2_END) {
+                victoryTitle.textContent = 'Section 2 Complete! 🪩';
+                victoryMessage.innerHTML = 'Dance party unlocked!<br>Now start Section 3 and feed your gator for a morning bike ride.';
+                nextButton.textContent = 'Start Section 3';
+                growthContainer.style.display = 'none';
+                if (danceParty) danceParty.style.display = 'block';
             } else {
-                if (victoryTitle) victoryTitle.textContent = 'Level Complete! 🎉';
-                if (selectedSection === 2) {
-                    victoryMessage.textContent = 'Great feed! Your gator gets bigger and gains more dance-party energy.';
+                victoryTitle.textContent = 'Level Complete! 🎉';
+                if (selectedSection === 3) {
+                    victoryMessage.textContent = 'Great feed! Your gator has even more morning bike-ride energy.';
+                } else if (selectedSection === 2) {
+                    victoryMessage.textContent = 'Great feed! Your gator gets bigger and gains dance-party energy.';
                 } else {
                     victoryMessage.textContent = 'Great job! Your gator is growing!';
                 }
                 nextButton.textContent = 'Next Level';
                 growthContainer.style.display = 'flex';
 
-                const sectionLevel = getSectionLevel(currentLevel);
                 const baseSize = 60;
                 const growthPerLevel = 5;
                 const signRatio = 1.2;
                 const victoryScale = 1.5;
-
+                const sectionLevel = getSectionLevel(currentLevel);
                 const currentGatorSize = baseSize + (sectionLevel - 1) * growthPerLevel;
                 const finalGatorSize = baseSize + (LEVELS_PER_SECTION - 1) * growthPerLevel;
-
                 gatorGrowth.style.fontSize = (currentGatorSize * victoryScale) + 'px';
                 document.querySelector('#victory-sign .sign-pole').style.height = (finalGatorSize * signRatio * victoryScale) + 'px';
             }
@@ -1581,42 +1580,29 @@
         }
 
         document.addEventListener('keydown', (e) => {
-            if (!hasStarted || document.getElementById('start-screen').style.display === 'flex') {
-                return;
-            }
+            if (!hasStarted || document.getElementById('start-screen').style.display === 'flex') return;
 
             if (document.getElementById('victory-screen').style.display === 'flex') {
-                if (e.key === 'Enter') {
-                    document.getElementById('next-level-btn').click();
-                }
+                if (e.key === 'Enter') document.getElementById('next-level-btn').click();
                 return;
             }
 
-            if (!currentText || currentLetterIndex >= currentText.length) {
-                return;
-            }
+            if (!currentText || currentLetterIndex >= currentText.length) return;
 
             const key = e.key.toLowerCase();
             const expectedKey = currentText[currentLetterIndex];
-
             const keyElement = document.getElementById('key-' + key);
             if (keyElement) {
                 keyElement.classList.add('pressed');
-                setTimeout(() => {
-                    keyElement.classList.remove('pressed');
-                }, 200);
+                setTimeout(() => keyElement.classList.remove('pressed'), 200);
             }
 
             if (key === expectedKey) {
                 correctCount++;
                 throwFood(key);
                 currentLetterIndex++;
-
                 if (currentLetterIndex >= currentText.length) {
-                    setTimeout(() => {
-                        const isGameComplete = currentLevel >= levels.length;
-                        showVictory(isGameComplete);
-                    }, 500);
+                    setTimeout(() => showVictory(currentLevel >= levels.length), 500);
                 } else {
                     displayText();
                 }
@@ -1624,27 +1610,16 @@
                 const currentLetter = document.querySelectorAll('.letter')[currentLetterIndex];
                 if (currentLetter) {
                     currentLetter.classList.add('incorrect');
-                    setTimeout(() => {
-                        currentLetter.classList.remove('incorrect');
-                    }, 300);
+                    setTimeout(() => currentLetter.classList.remove('incorrect'), 300);
                 }
             }
         });
 
         document.getElementById('next-level-btn').addEventListener('click', () => {
             document.getElementById('victory-screen').style.display = 'none';
-
-            if (currentLevel >= levels.length) {
-                showStartScreen();
-                return;
-            }
-
-            if (currentLevel === SECTION_1_END) {
-                hasStarted = true;
-                startSelectedSection(2);
-                return;
-            }
-
+            if (currentLevel >= levels.length) return showStartScreen();
+            if (currentLevel === SECTION_1_END) return startSelectedSection(2);
+            if (currentLevel === SECTION_2_END) return startSelectedSection(3);
             loadLevel(currentLevel + 1);
         });
 
@@ -1663,7 +1638,6 @@
         document.getElementById('admin-go-btn').addEventListener('click', () => {
             const password = document.getElementById('admin-password').value;
             const level = parseInt(document.getElementById('admin-level').value, 10);
-
             if (password === 'admin' && level >= 1 && level <= levels.length) {
                 document.getElementById('admin-modal').style.display = 'none';
                 document.getElementById('victory-screen').style.display = 'none';
@@ -1676,15 +1650,11 @@
         });
 
         document.getElementById('admin-level').addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                document.getElementById('admin-go-btn').click();
-            }
+            if (e.key === 'Enter') document.getElementById('admin-go-btn').click();
         });
 
         document.getElementById('admin-password').addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                document.getElementById('admin-level').focus();
-            }
+            if (e.key === 'Enter') document.getElementById('admin-level').focus();
         });
 
         init();
