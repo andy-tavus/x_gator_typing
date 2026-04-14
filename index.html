@@ -104,6 +104,11 @@
             color: #fff;
         }
 
+        #start-section-6-btn {
+            background: linear-gradient(135deg, #1b2a54, #0f1730);
+            color: #d8e6ff;
+        }
+
         .start-helper {
             margin-top: 18px;
             font-size: 16px;
@@ -1019,6 +1024,58 @@
             color: #fff;
         }
 
+        body.midnight-theme {
+            background: linear-gradient(to bottom, #050816 0%, #0b1330 45%, #121e46 100%);
+        }
+
+        body.midnight-theme #level-tracker,
+        body.midnight-theme #instructions {
+            background: rgba(10, 18, 42, 0.92);
+            color: #dff0ff;
+            box-shadow: 0 6px 14px rgba(2, 6, 16, 0.55);
+        }
+
+        body.midnight-theme #text-display {
+            background: rgba(12, 20, 46, 0.95);
+            color: #eef7ff;
+        }
+
+        body.midnight-theme .letter.current {
+            background: #7ec8ff;
+            color: #04233d;
+        }
+
+        body.midnight-theme .letter.completed {
+            color: #8fd8b0;
+        }
+
+        body.midnight-theme #swamp-area {
+            background: linear-gradient(to bottom, #182656 0%, #101c44 55%, #0a1432 100%);
+            border-left-color: #060d24;
+        }
+
+        body.midnight-theme #swamp-water {
+            background: linear-gradient(to bottom, #21448c 0%, #172d63 100%);
+            border-top-color: #4f7fd3;
+        }
+
+        body.midnight-theme .key {
+            background: #1a274f;
+            border-color: #88aaff;
+            color: #f2f7ff;
+        }
+
+        body.midnight-theme .key.highlight {
+            background: #8ed8ff;
+            color: #0b2442;
+        }
+
+        body.midnight-theme .key.pressed {
+            background: #6f90ff;
+            border-color: #d7e3ff;
+            color: #fff;
+        }
+
         #dance-party-container {
             width: 560px;
             height: 350px;
@@ -1399,6 +1456,111 @@
             60% { opacity: 0.85; transform: scale(1.9); }
             100% { opacity: 0; transform: scale(2.4); }
         }
+
+        #midnight-race-container {
+            width: 560px;
+            height: 350px;
+            margin: 24px auto 30px;
+            border-radius: 24px;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #08102a 0%, #101b46 46%, #18285d 100%);
+            border: 3px solid #4f67b4;
+        }
+
+        #race-moon {
+            position: absolute;
+            right: 26px;
+            top: 12px;
+            font-size: 56px;
+            z-index: 3;
+        }
+
+        #race-city {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 110px;
+            text-align: center;
+            font-size: 68px;
+            opacity: 0.92;
+            z-index: 2;
+        }
+
+        #race-road {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 128px;
+            background: linear-gradient(to bottom, #495364 0%, #2f3745 100%);
+            z-index: 2;
+        }
+
+        #race-road::before {
+            content: '';
+            position: absolute;
+            left: -40px;
+            right: -40px;
+            top: 56px;
+            height: 8px;
+            background: repeating-linear-gradient(
+                90deg,
+                #f7f09a 0 26px,
+                transparent 26px 52px
+            );
+            animation: race-lane-scroll 0.5s linear infinite;
+        }
+
+        @keyframes race-lane-scroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(-52px); }
+        }
+
+        #race-car {
+            position: absolute;
+            left: 50%;
+            bottom: 42px;
+            transform: translateX(-50%);
+            font-size: 98px;
+            z-index: 5;
+            animation: car-bounce 0.45s ease-in-out infinite;
+        }
+
+        @keyframes car-bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-6px); }
+        }
+
+        #race-gator {
+            position: absolute;
+            left: 50%;
+            bottom: 58px;
+            transform: translateX(-50%) scaleX(-1);
+            font-size: 72px;
+            z-index: 6;
+        }
+
+        .race-light {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #84dbff;
+            box-shadow: 0 0 14px #84dbff;
+            animation: race-light-blink 0.9s ease-in-out infinite;
+            z-index: 6;
+        }
+
+        .race-light.l1 { left: 140px; bottom: 86px; animation-delay: 0s; }
+        .race-light.l2 { left: 182px; bottom: 95px; animation-delay: 0.2s; }
+        .race-light.r1 { right: 146px; bottom: 86px; animation-delay: 0.1s; }
+        .race-light.r2 { right: 184px; bottom: 95px; animation-delay: 0.3s; }
+
+        @keyframes race-light-blink {
+            0%, 100% { opacity: 0.55; transform: scale(0.9); }
+            50% { opacity: 1; transform: scale(1.12); }
+        }
     </style>
 </head>
 <body>
@@ -1426,6 +1588,10 @@
                 <button id="start-section-5-btn" class="section-start-btn">
                     Section 5<br>
                     <span style="font-size: 15px; font-weight: 600;">Dusk mastery + fireworks finale (Levels 61-75)</span>
+                </button>
+                <button id="start-section-6-btn" class="section-start-btn">
+                    Section 6<br>
+                    <span style="font-size: 15px; font-weight: 600;">Midnight number-row keys + street race finale (Levels 76-90)</span>
                 </button>
             </div>
             <div class="start-helper">Tip: Click Level in the top bar anytime for admin jump mode.</div>
@@ -1550,6 +1716,17 @@
                 <div class="firework-burst four">🎆</div>
                 <div id="fireworks-gator">🐊</div>
             </div>
+            <div id="midnight-race-container" style="display: none;">
+                <div id="race-moon">🌙</div>
+                <div id="race-city">🌃</div>
+                <div id="race-road"></div>
+                <div id="race-car">🏎️</div>
+                <div id="race-gator">🐊</div>
+                <div class="race-light l1"></div>
+                <div class="race-light l2"></div>
+                <div class="race-light r1"></div>
+                <div class="race-light r2"></div>
+            </div>
             <p id="victory-message"></p>
             <button id="next-level-btn">Next Level</button>
         </div>
@@ -1561,7 +1738,7 @@
             <label>Password:</label>
             <input type="password" id="admin-password" placeholder="Enter password">
             <label>Level:</label>
-            <input type="number" id="admin-level" placeholder="Enter level number" min="1" max="75">
+            <input type="number" id="admin-level" placeholder="Enter level number" min="1" max="90">
             <div>
                 <button id="admin-go-btn">Go</button>
                 <button id="admin-cancel-btn">Cancel</button>
@@ -1668,7 +1845,25 @@
             { name: 'Section 5 Finale', keys: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ' ', ',', '.', '/', '\'', '?', '!', ':'], text: "dusk complete: fireworks light the sky!", description: 'Final level! Celebrate with a dusk fireworks victory!' }
         ];
 
-        const levels = [...section1Levels, ...section2Levels, ...section3Levels, ...section4Levels, ...section5Levels];
+        const section6Levels = [
+            { name: 'Section 6 Warmup', keys: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'j', 'k', 'l', ';', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ' ', ',', '.', '/', '\'', '?', '!', ':'], text: 'midnight begins. city lights glow.', description: 'Midnight mode starts. Charge up for the city street race!' },
+            { name: 'Number 1', keys: ['1', ' ', 'q', 'a', 'z'], text: '1 1 1 1', description: 'Add number 1 on the top row.' },
+            { name: 'Number 2', keys: ['1', '2', ' ', 'q', 'w', 'a', 's', 'z', 'x'], text: '1 2 1 2 22 11', description: 'Add number 2 with steady rhythm.' },
+            { name: 'Number 3', keys: ['1', '2', '3', ' ', 'q', 'w', 'e', 'a', 's', 'd'], text: '123 321 13 23', description: 'Add number 3 and simple patterns.' },
+            { name: 'Number 4', keys: ['1', '2', '3', '4', ' ', 'q', 'w', 'e', 'r', 'a', 's', 'd', 'f'], text: '1234 4321 14 24', description: 'Add number 4 and keep it smooth.' },
+            { name: 'Number 5', keys: ['1', '2', '3', '4', '5', ' ', 'q', 'w', 'e', 'r', 't', 'a', 's', 'd', 'f', 'g'], text: '12345 54321 55', description: 'Add number 5 to complete left side.' },
+            { name: 'Number 6', keys: ['1', '2', '3', '4', '5', '6', ' ', 'y', 'u', 'h', 'j', 'n', 'm'], text: '56 65 6 6 56', description: 'Cross into right-side numbers with 6.' },
+            { name: 'Number 7', keys: ['1', '2', '3', '4', '5', '6', '7', ' ', 'u', 'i', 'j', 'k', 'm'], text: '67 76 7 7 167', description: 'Add number 7 and right-hand control.' },
+            { name: 'Number 8', keys: ['1', '2', '3', '4', '5', '6', '7', '8', ' ', 'i', 'o', 'k', 'l'], text: '78 87 8 8 128', description: 'Add number 8 in short bursts.' },
+            { name: 'Number 9', keys: ['1', '2', '3', '4', '5', '6', '7', '8', '9', ' ', 'o', 'p', 'l', ';'], text: '89 98 9 9 129', description: 'Add number 9 and keep accuracy first.' },
+            { name: 'Number 0', keys: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' '], text: '0 1 2 3 4 5 6 7 8 9 0', description: 'Complete the number row with 0.' },
+            { name: 'Number Row Mix', keys: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' ', ':'], text: '9081726354 1234509876', description: 'Practice number row combinations.' },
+            { name: 'Race Code Practice', keys: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' ', ':', ',', '.'], text: 'lap 1: 92.4 lap 2: 91.8', description: 'Use numbers in race-style lines.' },
+            { name: 'Midnight Speed Build', keys: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' ', ':', ',', '.', '!', '?'], text: '3 2 1 go! lap 5?', description: 'Fast number + punctuation transitions.' },
+            { name: 'Section 6 Finale', keys: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' ', ':', ',', '.', '/', '\'', '?', '!', ';'], text: 'midnight race: lap 1, lap 2, win!', description: 'Final level! Win the midnight city street-car race!' }
+        ];
+
+        const levels = [...section1Levels, ...section2Levels, ...section3Levels, ...section4Levels, ...section5Levels, ...section6Levels];
         const SECTION_1_START = 1;
         const SECTION_1_END = section1Levels.length;
         const SECTION_2_START = SECTION_1_END + 1;
@@ -1678,7 +1873,9 @@
         const SECTION_4_START = SECTION_3_END + 1;
         const SECTION_4_END = SECTION_4_START + section4Levels.length - 1;
         const SECTION_5_START = SECTION_4_END + 1;
-        const SECTION_5_END = levels.length;
+        const SECTION_5_END = SECTION_5_START + section5Levels.length - 1;
+        const SECTION_6_START = SECTION_5_END + 1;
+        const SECTION_6_END = levels.length;
         const LEVELS_PER_SECTION = section1Levels.length;
 
         const foodMap = {
@@ -1688,7 +1885,9 @@
             'p': '🍕', 'q': '🧁', 'r': '🍚', 's': '🍓', 't': '🍅',
             'u': '☂️', 'v': '🧇', 'w': '🍉', 'x': '❌', 'y': '🍠',
             'z': '🦓', ' ': '💧', ';': '🌱', ',': '🥜', '.': '🍪',
-            '/': '🧃', '\'': '🍯', '?': '❓', '!': '🍿', ':': '🥤'
+            '/': '🧃', '\'': '🍯', '?': '❓', '!': '🍿', ':': '🥤',
+            '0': '🍩', '1': '🍪', '2': '🍫', '3': '🍬', '4': '🍭',
+            '5': '🧁', '6': '🥨', '7': '🍿', '8': '🍤', '9': '🍣'
         };
 
         function getSectionForLevel(level) {
@@ -1696,10 +1895,12 @@
             if (level <= SECTION_2_END) return 2;
             if (level <= SECTION_3_END) return 3;
             if (level <= SECTION_4_END) return 4;
-            return 5;
+            if (level <= SECTION_5_END) return 5;
+            return 6;
         }
 
         function getSectionBounds(section) {
+            if (section === 6) return { start: SECTION_6_START, end: SECTION_6_END };
             if (section === 5) return { start: SECTION_5_START, end: SECTION_5_END };
             if (section === 4) return { start: SECTION_4_START, end: SECTION_4_END };
             if (section === 3) return { start: SECTION_3_START, end: SECTION_3_END };
@@ -1713,7 +1914,8 @@
             if (section === 2) return level - SECTION_1_END;
             if (section === 3) return level - SECTION_2_END;
             if (section === 4) return level - SECTION_3_END;
-            return level - SECTION_4_END;
+            if (section === 5) return level - SECTION_4_END;
+            return level - SECTION_5_END;
         }
 
         function applySectionTheme(sectionNumber) {
@@ -1721,6 +1923,7 @@
             document.body.classList.toggle('morning-theme', sectionNumber === 3);
             document.body.classList.toggle('afternoon-theme', sectionNumber === 4);
             document.body.classList.toggle('dusk-theme', sectionNumber === 5);
+            document.body.classList.toggle('midnight-theme', sectionNumber === 6);
         }
 
         function setCookie(name, value, days) {
@@ -1756,6 +1959,7 @@
             document.getElementById('start-section-3-btn').addEventListener('click', () => startSelectedSection(3));
             document.getElementById('start-section-4-btn').addEventListener('click', () => startSelectedSection(4));
             document.getElementById('start-section-5-btn').addEventListener('click', () => startSelectedSection(5));
+            document.getElementById('start-section-6-btn').addEventListener('click', () => startSelectedSection(6));
         }
 
         function loadLevel(level) {
@@ -1793,6 +1997,7 @@
             if (selectedSection === 3) signText = 'YOU MUST BE<br>THIS TALL<br>TO BIKE';
             if (selectedSection === 4) signText = 'YOU MUST BE<br>THIS TALL<br>TO NAP';
             if (selectedSection === 5) signText = 'YOU MUST BE<br>THIS TALL<br>TO CELEBRATE';
+            if (selectedSection === 6) signText = 'YOU MUST BE<br>THIS TALL<br>TO RACE';
 
             if (swampBoard) swampBoard.innerHTML = signText;
             if (victoryBoard) victoryBoard.innerHTML = signText;
@@ -1896,6 +2101,7 @@
             const bikeRide = document.getElementById('bike-ride-container');
             const napDream = document.getElementById('nap-dream-container');
             const fireworksShow = document.getElementById('fireworks-container');
+            const midnightRace = document.getElementById('midnight-race-container');
 
             if (rollerCoaster) rollerCoaster.style.display = 'none';
             if (skateboard) skateboard.style.display = 'none';
@@ -1903,13 +2109,14 @@
             if (bikeRide) bikeRide.style.display = 'none';
             if (napDream) napDream.style.display = 'none';
             if (fireworksShow) fireworksShow.style.display = 'none';
+            if (midnightRace) midnightRace.style.display = 'none';
 
             if (gameComplete) {
-                victoryTitle.textContent = 'Dusk Fireworks Victory! 🎆';
-                victoryMessage.textContent = 'Your gator finishes dusk training and celebrates with a giant fireworks show!';
+                victoryTitle.textContent = 'Midnight Street Race Victory! 🏎️';
+                victoryMessage.textContent = 'Your gator blasts through the midnight city and wins the street-car race!';
                 nextButton.textContent = 'Choose Section';
                 growthContainer.style.display = 'none';
-                if (fireworksShow) fireworksShow.style.display = 'block';
+                if (midnightRace) midnightRace.style.display = 'block';
             } else if (currentLevel === SECTION_1_END) {
                 victoryTitle.textContent = 'Section 1 Complete! 🎉';
                 victoryMessage.innerHTML = 'You did it! Time for the water slide ride! 🛝<br>Next stop: Section 2 evening training.';
@@ -1934,9 +2141,17 @@
                 nextButton.textContent = 'Start Section 5';
                 growthContainer.style.display = 'none';
                 if (napDream) napDream.style.display = 'block';
+            } else if (currentLevel === SECTION_5_END) {
+                victoryTitle.textContent = 'Section 5 Complete! 🎆';
+                victoryMessage.innerHTML = 'Dusk fireworks unlocked!<br>Now start Section 6 midnight mode for the city street race.';
+                nextButton.textContent = 'Start Section 6';
+                growthContainer.style.display = 'none';
+                if (fireworksShow) fireworksShow.style.display = 'block';
             } else {
                 victoryTitle.textContent = 'Level Complete! 🎉';
-                if (selectedSection === 5) {
+                if (selectedSection === 6) {
+                    victoryMessage.textContent = 'Great feed! Your gator is charging up for the midnight street race.';
+                } else if (selectedSection === 5) {
                     victoryMessage.textContent = 'Great feed! Your gator is glowing with dusk energy for the fireworks show.';
                 } else if (selectedSection === 4) {
                     victoryMessage.textContent = 'Great feed! Your gator is getting sleepier and ready for an afternoon nap.';
@@ -2008,6 +2223,7 @@
             if (currentLevel === SECTION_2_END) return startSelectedSection(3);
             if (currentLevel === SECTION_3_END) return startSelectedSection(4);
             if (currentLevel === SECTION_4_END) return startSelectedSection(5);
+            if (currentLevel === SECTION_5_END) return startSelectedSection(6);
             loadLevel(currentLevel + 1);
         });
 
